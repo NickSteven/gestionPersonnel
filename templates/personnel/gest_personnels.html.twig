@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>GESTION PERSONNEL ETO</h1>
+
+{% for employe in employes %}
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Nom</th>
+      <th scope="col">Prénoms</th>
+      <th scope="col">Adresse</th>
+      <th scope="col">Fonction</th>
+    </tr>
+  </thead>
+  <tbody>
+      <td>{{ employe.nom }}</td>
+      <td>{{ employe.prenom }}</td>
+      <td>{{ employe.adresse }}</td>
+      <td>{{ employe.fonction }}</td>
+   </tbody>
+</table>
+{% endfor %}
+
+{% endblock %}
