@@ -5,7 +5,7 @@
 <h1>Liste des employés</h1>
 
 
-<table class="table table-hover">
+<table id="employes" class="table table-hover">
   <thead>
     <tr>
       <th scope="col">Nom</th>
@@ -17,7 +17,7 @@
       <td>{{ employe.nom }}</td>
       <td>
       	<a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-success">Voir</a>
-      	<a href="#" class="btn btn-danger">Supprimer</a>
+      	<a href="#" class="btn btn-danger delete-employe">Supprimer</a>
       </td>
    </tbody>
    {% endfor %}
@@ -25,5 +25,11 @@
 <a class="btn btn-primary" href="{{ path('new_employe') }}">Nouveau employé</a>
 </div>
 
+{% endblock %}
+
+{% block javascripts %}
+	<script type="text/javascript">
+   		alert(2);
+	</script>
 
 {% endblock %}
