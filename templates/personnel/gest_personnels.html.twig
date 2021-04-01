@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+	<script type="text/javascript" src="{{ asset('js/main.js')}}"></script>
+
+{% endblock %}
+
 {% block body %}
 <div class="container">
 <h1>Liste des employés</h1>
@@ -17,19 +22,12 @@
       <td>{{ employe.nom }}</td>
       <td>
       	<a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-success">Voir</a>
-      	<a href="#" class="btn btn-danger delete-employe">Supprimer</a>
+      	<a id="button" class="btn btn-danger delete-employe">Supprimer</a>
       </td>
    </tbody>
    {% endfor %}
 </table>
 <a class="btn btn-primary" href="{{ path('new_employe') }}">Nouveau employé</a>
 </div>
-
 {% endblock %}
 
-{% block javascripts %}
-	<script type="text/javascript">
-   		alert(2);
-	</script>
-
-{% endblock %}
