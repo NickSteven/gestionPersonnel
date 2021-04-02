@@ -22,7 +22,8 @@
       <td>{{ employe.nom }}</td>
       <td>
       	<a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-success">Voir</a>
-      	<a id="button" class="btn btn-danger delete-employe">Supprimer</a>
+      	<a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success">Editer</a>
+      	<a id="button" class="btn btn-danger delete-employe" data-id="{{ employe.id }}">Supprimer</a>
       </td>
    </tbody>
    {% endfor %}

@@ -13,6 +13,7 @@ use App\Form\EmployeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 class PersonnelController extends AbstractController
 {	
@@ -132,6 +133,72 @@ class PersonnelController extends AbstractController
     	return $this->render('personnel/nouveau.html.twig', array(
     		'form' => $form->createView()
     	));
+    }
+
+    // Editer un employé
+    /**
+     * @Route("/gest_personnel/edit/{id}", name="edit_employe")
+     * Method({"GET", "POST"})
+     */
+    public function edit(Request $request, $id) {
+    	$employe = new Employe();
+
+    	$employe = $this->getDoctrine()->getRepository(Employe::class)->find($id);
+
+    	$form = $this->createFormBuilder($employe)
+    				 ->add('nom', TextType::class, array(
+    				 	'required' => true,
+    				 	'attr' => array('class' => 'form-control')
+    				 ))
+    				 ->add('prenom', TextType::class, array(
+    				 	'required' => true,
+    				 	'attr' => array('class' => 'form-control')
+    				 ))
+    				 ->add('adresse', TextType::class, array(
+    				 	'required' => true,
+    				 	'attr' => array('class' => 'form-control')
+    				 ))
+    				 ->add('fonction', TextType::class, array(
+    				 	'required' => true,
+    				 	'attr' => array('class' => 'form-control')
+    				 ))
+    				 ->add('save', SubmitType::class, array(
+    				 	'label' => 'Mettre à jour',
+    				 	'attr' => array('class' => 'btn btn-primary margin-top-3')
+    				 ))
+    				 ->getForm();
+
+    	$form->handleRequest($request);
+
+    	if($form->isSubmitted() && $form->isValid()) {
+    		
+
+    		$entityManager = $this->getDoctrine()->getManager();
+    		$entityManager->flush();
+
+    		return $this->redirectToRoute('personnel_show');
+    	}
+
+    	return $this->render('personnel/edit.html.twig', array(
+    		'form' => $form->createView()
+    	));
+    }
+
+
+    // Suppression d'un employé
+    /**
+     * @Route("/gest_personnel/delete/{id}")
+     * @Method({"DELETE"})
+    */
+    public function delete(Request $request, $id) {
+    	$employe = $this->getDoctrine()->getRepository(Employe::class)->find($id);
+
+    	$entityManager = $this->getDoctrine()->getManager();
+    	$entityManager->remove($employe);
+    	$entityManager->flush();
+
+    	$response = new Response();
+    	$response->send();
     }
 
     // Edition des employés
