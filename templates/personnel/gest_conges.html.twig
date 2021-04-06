@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% if app.user %}
 <h1>GESTION CONGES ETO</h1>
+
+{% else %}
+<div class="container">
+ <p>Vous devez d'abord connecter.</p>
+ </div>
+{% endif %}
 {% endblock %}

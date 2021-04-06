@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+{% if app.user %}
 <div class="container">
 <h1>Liste des employés</h1>
 
@@ -30,5 +31,11 @@
 </table>
 <a class="btn btn-primary" href="{{ path('new_employe') }}">Nouveau employé</a>
 </div>
+
+{% else %}
+<div class="container">
+ <p>Vous devez d'abord connecter.</p>
+ </div>
+{% endif %}
 {% endblock %}
 

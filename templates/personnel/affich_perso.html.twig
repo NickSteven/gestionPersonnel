@@ -1,9 +1,16 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+{% if app.user %}
 <div class="container">
 <h1>Prénom(s): {{ employe.prenom }}</h1>
 <p>Adresse: {{ employe.adresse }}</p>
 <p>Fonction: {{ employe.fonction }}</p>
 </div>
+
+{% else %}
+<div class="container">
+ <p>Vous devez d'abord connecter.</p>
+ </div>
+{% endif %}
 {% endblock %}
