@@ -1,59 +1,33 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>{% block title %}Accueil{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/metisMenu.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}">
-    <!-- amchart css -->
-    <link rel="stylesheet" href="{{ asset('css/export.css') }}" type="text/css" media="all" />
-    <!-- others css -->
-    <link rel="stylesheet" href="{{ asset('css/typography.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/default-css.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    <!-- modernizr css -->
-    <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
-
-    {% block stylesheets %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        <link rel="shortcut icon" type="image/png" href="{{ asset('images/icon/favicon.ico') }}">
+        <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/themify-icons.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/metisMenu.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/slicknav.min.css') }}">
+        <!-- amchart css -->
+        <link rel="stylesheet" href="{{ asset('css/export.css') }}" type="text/css" media="all" />
+        <!-- others css -->
+        <link rel="stylesheet" href="{{ asset('css/typography.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/default-css.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
+        <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
+        {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
-    {% endblock %}
-</head>
-
-<!-- Si user non connecté -->
-
-    {% if not app.user %}
-        <div id="preloader">
-        <div class="loader"></div>
-    </div>
-    <!-- preloader area end -->
-    <!-- error area start -->
-    <div class="error-area ptb--100 text-center">
-        <div class="container">
-            <div class="error-content">
-                <h2>oups!</h2>
-                <p>Veuillez d'abord vous connecter</p>
-                <a href="{{ path('security_login') }}">Conexion</a>
-            </div>
-        </div>
-    </div>
-    {% else %}
-
-<body>
-
-    <!--[if lt IE 8]>
-            <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
-        <![endif]-->
-    <!-- preloader area start -->
-    <div id="preloader">
+        {% endblock %}
+        
+        
+    </head>
+    <body>
+<div id="preloader">
         <div class="loader"></div>
     </div>
     <!-- preloader area end -->
@@ -70,18 +44,17 @@
                 <div class="menu-inner">
                     <nav>
                         <ul class="metismenu" id="menu">
-                            
-                            <li class="{% if tab is defined and tab == 'bord' %}active{% endif %}">
+                            <li class="active">
                                 <a href="{{ path('accueil_show') }}" aria-expanded="true"><i class="ti-dashboard"></i><span>Tableau de bord</span></a>
                             </li>
-                            <li class="{% if personnel is defined and personnel == 'personnels' %}active{% endif %}">
+                            <li>
                                 <a href="{{ path('personnel_show') }}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Personnels
                                     </span></a>
                             </li>
-                            <li class="{% if conge is defined and conge == 'conges' %}active{% endif %}">
+                            <li>
                                 <a href="{{ path('conges_show') }}" aria-expanded="true"><i class="ti-pie-chart"></i><span>Congés</span></a>
                             </li>
-                            <li class="{% if permission is defined and permission == 'permissions' %}active{% endif %}">
+                            <li>
                                 <a href="{{ path('permission_show') }}" aria-expanded="true"><i class="ti-palette"></i><span>Permisssions</span></a>
                             </li>
                             
@@ -394,8 +367,8 @@
             </div>
         </div>
     </div>
-    {% endif %}
-    <!-- offset area end -->
+        {% block body %}
+          <!-- offset area end -->
     <!-- jquery latest version -->
     <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>
     <!-- bootstrap 4 js -->
@@ -423,9 +396,8 @@
     <!-- others plugins -->
     <script src="{{ asset('js/plugins.js') }}"></script>
     <script src="{{ asset('js/scripts.js') }}"></script>
-
-    {% block body %}{% endblock %}
+        {% endblock %}
         {% block javascripts%}
         {% endblock %}
-</body>
+    </body>
 </html>
