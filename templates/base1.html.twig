@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {# Run `composer require symfony/webpack-encore-bundle`
+           and uncomment the following Encore helpers to start using Symfony UX #}
+        <link rel="stylesheet" type="text/css" href="{{ asset('cs/bootstrap.min.css') }}">
+        {% block stylesheets %}
+            {#{{ encore_entry_link_tags('app') }}#}
+        {% endblock %}
+        
+        
+    </head>
+    <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <a class="navbar-brand" href="/">ASSISTEO</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarColor01">
+    <ul class="navbar-nav mr-auto">
+      
+
+      {% if not app.user %}
+      <li class="nav-item">
+        <a href="{{ path('security_login') }}" class="nav-link">Connexion</a>
+      </li>
+      {% else %}
+      <li class="nav-item {% if tab is defined and tab == 'bord' %}active{% endif %}">
+        <a class="nav-link" href="/">Tableau de bord
+        </a>
+      </li>
+      <li class="nav-item {% if personnel is defined and personnel == 'personnels' %}active{% endif %}">
+        <a class="nav-link" href="/gest_personnel">Personnels</a>
+      </li>
+      <li class="nav-item {% if conge is defined and conge == 'conges' %}active{% endif %}">
+        <a class="nav-link" href="/gest_conges">Congés</a>
+      </li>
+      <li class="nav-item {% if permission is defined and permission == 'permissions' %}active{% endif %}">
+        <a class="nav-link" href="/gest_permission">Permissions</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ path('security_logout') }}" class="nav-link">Déconnexion</a>
+      </li>
+      {% endif %}
+    </ul>
+  </div>
+</nav>
+        {% block body %}{% endblock %}
+        {% block javascripts%}
+        {% endblock %}
+    </body>
+</html>
