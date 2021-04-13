@@ -1,41 +1,70 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Personnels{% endblock %}
 {% block javascripts %}
 	<script type="text/javascript" src="{{ asset('jss/main.js')}}"></script>
 
 {% endblock %}
 
 {% block body %}
-{% if app.user %}
-<div class="container">
-<h1>Liste des employés</h1>
 
 
-<table id="employes" class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Nom</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  {% for employe in employes %}
-  <tbody>
-      <td>{{ employe.nom }}</td>
-      <td>
-      	<a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-success">Voir</a>
-      	<a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success">Editer</a>
-      	<a id="button" class="btn btn-danger delete-employe" data-id="{{ employe.id }}">Supprimer</a>
-      </td>
-   </tbody>
-   {% endfor %}
-</table>
-<a class="btn btn-primary" href="{{ path('new_employe') }}">Nouveau employé</a>
-</div>
 
-{% else %}
-<div class="container">
- <p>Vous devez d'abord connecter.</p>
- </div>
-{% endif %}
+
+
+
+
+<div class="main-content-inner">
+                <div class="row">
+                    <!-- data table start -->
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Liste des employés</h4>
+                                <div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="employes">
+                                            <thead class="text-uppercase bg-dark">
+                                                <tr class="text-white">
+                                                    <th scope="col">Nom</th>
+                                                    <th scope="col">Prénoms</th>
+                                                    <th scope="col">Adresse</th>
+                                                    <th scope="col">Poste</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+
+                                            {% for employe in employes %}
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ employe.nom }}</th>
+                                                    <td>{{ employe.prenom }}</td>
+                                                    <td>{{ employe.adresse }}</td>
+                                                    <td>{{ employe.fonction }}</td>
+                                                    <td><a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-info"><i class="ti-eye"></i></a>
+                                                        <a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success"><i class="ti-pencil-alt"></i></a>
+                                                        <a id="button" class="btn btn-danger delete-employe" data-id="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+
+                                            {% endfor %}
+
+                                        </table>
+                                        <a class="btn btn-primary" href="{{ path('new_employe') }}"><i class="ti-plus"></i></a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- data table end -->
+                    
+                  
+                </div>
+            </div>
+        </div>
+
+
+
 {% endblock %}
 
