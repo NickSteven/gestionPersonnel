@@ -211,4 +211,13 @@ class PersonnelController extends AbstractController
     	return $this->render('personnel/affich_perso.html.twig', 
     		array('employe' => $employe));
     }
+
+    // Demande congé
+    /**
+     * @Route("/nouveau_conge", name="conge_new")
+     */
+    public function new_conge() {
+
+        return $this->render('personnel/nouveau_conge.html.twig');
+    }
 }
