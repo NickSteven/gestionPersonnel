@@ -4,13 +4,18 @@ namespace App\Controller;
 
 
 use App\Entity\Employe;
+use App\Entity\Conges;
 use App\Repository\EmployeRepository;
+use App\Repository\ConggesRepository;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\EmployeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -24,8 +29,15 @@ class PersonnelController extends AbstractController
 	 */
 	private $repository;
 
-	public function __construct(EmployeRepository $repository) {
+    /**
+     * @var CongesRepository
+     */
+
+    private $congerepository;
+
+	public function __construct(EmployeRepository $repository, CongesRepository $congerepository) {
 		$this->repository = $repository;
+        $this->repository = $congerepository;
 	}
 
 	// Route vers accueil
@@ -72,8 +84,11 @@ class PersonnelController extends AbstractController
      * @Route("/gest_conges", name="conges_show")
      */
     public function conges() {
+
+        $conges = $this->repository->findAll();
     	return $this->render('personnel/gest_conges.html.twig', [
-    		'conge' => 'conges'
+    		'conge' => 'conges',
+            'conges' => $conges
     	]);
     }
 
@@ -216,8 +231,46 @@ class PersonnelController extends AbstractController
     /**
      * @Route("/nouveau_conge", name="conge_new")
      */
-    public function new_conge() {
+    public function new_conge(Request $request, ObjectManager $manager) {
+        $conge = new Conges();
 
-        return $this->render('personnel/nouveau_conge.html.twig');
+        $form = $this->createFormBuilder($conge)
+                     ->add('date_depart', DateType::class, [
+                        
+                        'label' => 'Date de départ:',
+                        'required' => TRUE,
+                        'widget' => 'single_text',
+                        
+                    ])
+                     ->add('date_retour', DateType::class, [
+                        
+                        'label' => 'Date de retour:',
+                        'required' => TRUE,
+                        'widget' => 'single_text',
+                     ])
+                     ->add('motif', TextareaType::class, [
+                        
+                     ])
+                     ->add('save', SubmitType::class, [
+                        
+                        'label' => 'Soumettre'
+                     ])
+                     ->getForm();
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $conge->setDateDemande(new \DateTime());
+
+            $manager->persist($conge);
+            $manager->flush();
+
+            return $this->redirectToRoute('conge_new');
+        }
+
+
+        return $this->render('personnel/nouveau_conge.html.twig', [
+            'formConge' => $form->createView()
+        ]);
     }
 }

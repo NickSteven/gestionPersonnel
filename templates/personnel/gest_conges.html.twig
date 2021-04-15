@@ -2,14 +2,48 @@
 
 {% block title %}Congés{% endblock %}
 {% block body %}
-{% if app.user %}
-<div class="container">
-	<h1>GESTION CONGES ETO</h1>
-</div>
+<div class="main-content-inner">
+                <div class="row">
+                    <!-- data table start -->
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Liste de demandes</h4>
+                                <div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Date demande</th>
+                                                    <th scope="col">Date de départ</th>
+                                                    <th scope="col">Date de retour</th>
+                                                    <th scope="col">Motif</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
 
-{% else %}
-<div class="container">
- <p>Vous devez d'abord connecter.</p>
- </div>
-{% endif %}
+                                            	{% foreach conge in conges %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ conge.date_demande }}</th>
+                                                    <td>Mark</td>
+                                                    <td>09 / 07 / 2018</td>
+                                                    <td>$120</td>
+                                                    <td><i class="ti-trash"></i></td>
+                                                </tr>
+                                                <tr>
+                                            </tbody>
+                                        {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                    <!-- data table end -->
+                    
+                  
+                </div>
+            </div>
 {% endblock %}

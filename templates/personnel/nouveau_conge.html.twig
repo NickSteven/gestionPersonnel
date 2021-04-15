@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
+{% form_theme formConge 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Nouveau congé{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/datepicker.css') }}">
+{% endblock %}
 {% block body %}
 	<div class="main-content-inner">
                 <div class="row">
@@ -8,24 +12,13 @@
                     <div class="col-12 mt-5">
                         <div class="card">
                             <div class="card-body">
-                            	<form action="" method="post">
-                                        <h4 class="header-title">Formulaire de demande de congé</h4>
-                                        <p class="text-muted font-14 mb-4">Veuillez remplir les champs ci-dessous.</p>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Date de départ:</label>
-                                            <input class="form-control" type="date" id="example-text-input" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Date de retour:</label>
-                                            <input class="form-control" type="date" id="example-text-input" required>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="example-text-input" class="col-form-label">Motif:</label>
-                                            <textarea class="form-control" id="example-text-input" required></textarea>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary mt-4 pr-4 pl-4">Valider</button>
-                                </form>
-                                    </div>
+                            	{{ form_start(formConge) }}
+                            	{{ form_widget(formConge) }}
+                            	{{ form_end(formConge) }}
+                            	
+                            	
+                            </div>
+                            	
                         </div>
                     </div>
                     <!-- data table end -->
@@ -33,4 +26,13 @@
                   
                 </div>
             </div>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/datepicker.js') }}"></script>
+	<script type="text/javascript">
+	jQuery(document).ready(function{
+		$('.js-datepicker').datepicker();
+	});
+	</script>
 {% endblock %}
