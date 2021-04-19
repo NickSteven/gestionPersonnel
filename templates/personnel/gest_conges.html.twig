@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Congés{% endblock %}
+	
 {% block body %}
 <div class="main-content-inner">
                 <div class="row">
@@ -11,7 +12,7 @@
                                 <h4 class="header-title">Liste de demandes</h4>
                                 <div class="single-table">
                                     <div class="table-responsive">
-                                        <table class="table text-center">
+                                        <table class="table text-center" id="conges">
                                             <thead class="text-uppercase bg-secondary">
                                                 <tr class="text-white">
                                                     <th scope="col">Date demande</th>
@@ -22,14 +23,15 @@
                                                 </tr>
                                             </thead>
 
-                                            	{% foreach conge in conges %}
+                                            
+                                            	{% for conge in conges %}	
                                             <tbody>
                                                 <tr>
-                                                    <td>{{ conge.date_demande }}</th>
-                                                    <td>Mark</td>
-                                                    <td>09 / 07 / 2018</td>
-                                                    <td>$120</td>
-                                                    <td><i class="ti-trash"></i></td>
+                                                    <td>{{ conge.date_demande |date("d/m/Y") }}</th>
+                                                    <td>{{ conge.date_depart |date("d/m/Y")}}</td>
+                                                    <td>{{ conge.date_retour |date("d/m/Y")}}</td>
+                                                    <td>{{ conge.motif }}</td>
+                                                    <td><button class="btn btn-success"><p style="color:white">Valider</p></button>   <a id="button" class="btn btn-danger delete-conge" id-conge="{{ conge.id }}"><p style="color:white">Refuser</p></a>   <button type="button" class="btn btn-primary btn-flat btn-lg mt-3" data-toggle="modal" data-target="#exampleModalLong">jQuery</button></td>
                                                 </tr>
                                                 <tr>
                                             </tbody>
@@ -38,6 +40,42 @@
                                     </div>
                                 </div>
                             
+                                <!--modal form -->
+
+                                <div class="col-lg-6 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <!-- Button trigger modal -->
+                                <!-- Modal -->
+                                <div class="modal fade" id="exampleModalLong">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title">Suppression</h5>
+                                                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <form action="/gest_conges/delete/6">
+                                                <div class="form-group">
+                                                    <input type="text" name="" class="form-control test-conge">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                                <!--endmodal-->
+
+
+
                             </div>
                         </div>
                     </div>
@@ -46,4 +84,32 @@
                   
                 </div>
             </div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	<script type="text/javascript">
+	
+const conges= document.getElementById('conges');
+console.log(conges);
+if(conges){
+conges.addEventListener("click", e => {
+	if (e.target.className === 'btn btn-danger delete-conge') {
+		if (confirm('Etes-vous sûr?')) {
+			const id = e.target.getAttribute('id-conge');
+
+			fetch(`/gest_conges/delete/${id}`, {
+				method: 'DELETE'
+			}).then(res => window.location.reload());
+		}
+	}
+});
+}
+</script>
+<script>
+$(document).ready(function(){
+    var id_conge = $this.data('id-conge');
+    $
+});
+</script>
 {% endblock %}

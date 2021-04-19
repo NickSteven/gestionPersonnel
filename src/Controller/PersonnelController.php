@@ -6,7 +6,6 @@ namespace App\Controller;
 use App\Entity\Employe;
 use App\Entity\Conges;
 use App\Repository\EmployeRepository;
-use App\Repository\ConggesRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -29,15 +28,8 @@ class PersonnelController extends AbstractController
 	 */
 	private $repository;
 
-    /**
-     * @var CongesRepository
-     */
-
-    private $congerepository;
-
-	public function __construct(EmployeRepository $repository, CongesRepository $congerepository) {
+	public function __construct(EmployeRepository $repository) {
 		$this->repository = $repository;
-        $this->repository = $congerepository;
 	}
 
 	// Route vers accueil
@@ -79,18 +71,18 @@ class PersonnelController extends AbstractController
     	]);
     }
 
-    // Route vers gestion de congés
+    
     /**
      * @Route("/gest_conges", name="conges_show")
      */
-    public function conges() {
+    /*public function conges() {
 
         $conges = $this->repository->findAll();
     	return $this->render('personnel/gest_conges.html.twig', [
     		'conge' => 'conges',
             'conges' => $conges
     	]);
-    }
+    }*/
 
     // Route vers gestion permission
     /**
@@ -202,7 +194,7 @@ class PersonnelController extends AbstractController
 
     // Suppression d'un employé
     /**
-     * @Route("/gest_personnel/delete/{id}")
+     * @Route("/gest_conges/delete/{id}")
      * @Method({"DELETE"})
     */
     public function delete(Request $request, $id) {

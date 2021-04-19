@@ -20,17 +20,17 @@ class Conges
     /**
      * @ORM\Column(type="date")
      */
-    private $date_demande;
+    public $date_demande;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $date_depart;
+    public $date_depart;
 
     /**
      * @ORM\Column(type="date")
      */
-    private $date_retour;
+    public $date_retour;
 
     /**
      * @ORM\Column(type="string", length=255)
