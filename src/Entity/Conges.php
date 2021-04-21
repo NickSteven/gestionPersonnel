@@ -37,6 +37,11 @@ class Conges
      */
     private $motif;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $etat;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -86,6 +91,18 @@ class Conges
     public function setMotif(string $motif): self
     {
         $this->motif = $motif;
+
+        return $this;
+    }
+
+    public function getEtat(): ?string
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(string $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

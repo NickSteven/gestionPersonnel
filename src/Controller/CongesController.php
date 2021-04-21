@@ -62,28 +62,38 @@ class CongesController extends AbstractController
         return $this->redirectToRoute('conges_show');
     }
 
-    // Delete form
+    // Changer l'etat du demande
     /**
-     * @Route("/gest_conges/suppr/{}" name="supp_conges")
-     * @Method({"GET", "DELETE"})
+     * @Route("/gest_conges/editer/{id}", name="valid_conges")
+     * @Method({"GET","POST"})
      */
-    /*public function supprimer(Request $request, $id) {
+    public function change(Request $request, $id) {
+        $conge = new Conges();
+
         $conge = $this->getDoctrine()->getRepository(Conges::class)->find($id);
 
-        $form = $this->createDeleteForm($conge);
-        if ($request->getMethod() == 'DELETE') {
-            $form->handleRequest($request);
-            if($form->isSubmitted() && $form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($conge);
-                $em->flush();
+        $change = $this->createFormBuilder($conge)
+                     ->add('etat', TextType::class, array(
+                        'required' => true,
+                        'attr' => array('class' => 'form-control')
+                     ))
 
+                     ->add('save', SubmitType::class, [
+                        
+                        'label' => 'Soumettre'
+                     ])
+                     ->getForm();
 
-            }
-            $response = new Response();
-                $response->send();
+        $change->handleRequest($request);
 
-                return $this->redirectToRoute('conges_show');
+        if($change->isSubmitted() && $change->isValid()) {
+            
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
         }
-    }*/
+        return $this->render('conges/valider_conge.html.twig', array(
+            'change' => $change->createView()
+        ));
+    }
 }

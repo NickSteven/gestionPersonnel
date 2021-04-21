@@ -253,6 +253,7 @@ class PersonnelController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $conge->setDateDemande(new \DateTime());
+            $conge->setEtat(1);
 
             $manager->persist($conge);
             $manager->flush();

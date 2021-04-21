@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Editer employé{% endblock %}
+{% block body %}
+{% if app.user %}
+<div class="container">
+ {{ form_start(change) }}
+ {{ form_widget(change) }}
+ {{ form_end(change) }}
+</div>
+
+{% else %}
+<div class="container">
+ <p>Vous devez d'abord connecter.</p>
+ </div>
+{% endif %}
+{% endblock %}
