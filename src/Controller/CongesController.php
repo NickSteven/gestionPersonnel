@@ -46,7 +46,7 @@ class CongesController extends AbstractController
 
     // Suppression d'un demande de congé
     /**
-     * @Route("/gest_conges/delete/{id}")
+     * @Route("/gest_conges/delete/{id}" , name="conge_delete")
      * @Method({"DELETE"})
      */
     public function delete(Request $request, $id) {
@@ -61,4 +61,29 @@ class CongesController extends AbstractController
 
         return $this->redirectToRoute('conges_show');
     }
+
+    // Delete form
+    /**
+     * @Route("/gest_conges/suppr/{}" name="supp_conges")
+     * @Method({"GET", "DELETE"})
+     */
+    /*public function supprimer(Request $request, $id) {
+        $conge = $this->getDoctrine()->getRepository(Conges::class)->find($id);
+
+        $form = $this->createDeleteForm($conge);
+        if ($request->getMethod() == 'DELETE') {
+            $form->handleRequest($request);
+            if($form->isSubmitted() && $form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($conge);
+                $em->flush();
+
+
+            }
+            $response = new Response();
+                $response->send();
+
+                return $this->redirectToRoute('conges_show');
+        }
+    }*/
 }
