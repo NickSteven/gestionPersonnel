@@ -10,7 +10,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\EmployeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,12 +21,13 @@ class CongesController extends AbstractController
 	/**
 	 * @var CongesRepository
 	 */
-	private $repository;
+	//private $repository;
 
 	public function __construct(CongesRepository $repository) {
 		$this->repository = $repository;
 	}
 
+    
 
 
 
@@ -62,7 +62,7 @@ class CongesController extends AbstractController
         return $this->redirectToRoute('conges_show');
     }
 
-    // Changer l'etat du demande
+    // Action pour la première validation
     /**
      * @Route("/gest_conges/editer/{id}", name="valid_conges")
      * @Method({"GET","POST"})
@@ -75,7 +75,8 @@ class CongesController extends AbstractController
         $change = $this->createFormBuilder($conge)
                      ->add('etat', TextType::class, array(
                         'required' => true,
-                        'attr' => array('class' => 'form-control')
+                        'attr' => array('class' => 'form-control' , 'hidden' => true ,
+                        'value' => 2)
                      ))
 
                      ->add('save', SubmitType::class, [
@@ -96,4 +97,20 @@ class CongesController extends AbstractController
             'change' => $change->createView()
         ));
     }
+
+
+    // Affichange conge à valider
+    /**
+     * @Route("/conges/final/{etat}", name="con_show")
+     * @Method({"POST"})
+     */
+    public function affichFinal($etat) {
+        $conge = $this->getDoctrine()->getRepository(Conges::class)->afficherCongesAvalider($etat);
+
+        return $this->render('conges/conge_valid_final.html.twig', [
+            'conge' => $conge
+        ]);
+    }
+
+
 }

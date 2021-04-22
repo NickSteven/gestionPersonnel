@@ -19,22 +19,36 @@ class CongesRepository extends ServiceEntityRepository
         parent::__construct($registry, Conges::class);
     }
 
-    // /**
-    //  * @return Conges[] Returns an array of Conges objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /*/**
+     * @return Conges[]
+     */
+
+    /*public function findValiderFinal(int $etat): array {
+        $conn = $this->getEntityManager()->getConnection();
+
+        $sql = '
+            SELECT * FROM conges p
+            WHERE p.etat = :2 
+        ';
+        $stmt = $conn->prepare($sql);
+        $stmt->execute(['etat' => $etat]);
+
+        return $stmt->fetchAllAssociative();
+    }*/
+
+    /**
+    * @return Conges[] Returns an array of Conges objects
+    */
+    public function afficherCongesAvalider(string $etat)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.exampleField = :val')
-            ->setParameter('val', $value)
+            ->andWhere('c.etat = :val')
+            ->setParameter('val', $etat)
             ->orderBy('c.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Conges

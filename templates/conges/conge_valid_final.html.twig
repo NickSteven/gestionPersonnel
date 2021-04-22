@@ -7,6 +7,7 @@
 	
 {% block body %}
 <div class="main-content-inner">
+              
       
                 <div class="row">
 
@@ -31,7 +32,7 @@
                                             </thead>
 
                                             
-                                            	{% for conge in conges %}	
+                                            	{% for conge in conge %}	
                                             <tbody>
                                                 <tr>
                                                     <td>{{ conge.date_demande |date("d/m/Y")}}</td>
@@ -39,14 +40,11 @@
                                                     <td>{{ conge.date_retour |date("d/m/Y")}}</td>
                                                     <td>{{ conge.motif }}</td>
                                                     <td>
-
-                                                    <a href="{{ path('valid_conges', {id: conge.id} )}}" class="btn btn-info"><i class="ti-check"></i>Valider</a>
-
                                                     <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}">Valider</a>
 
                                                     <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
 
-                                                    
+                                                    <a href="{{ path('valid_conges', {id: conge.id} )}}" class="btn btn-success">Valider</i></a>
                                                     </td>
                                                     
                                                 </tr>

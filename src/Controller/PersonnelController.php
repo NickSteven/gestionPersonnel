@@ -208,7 +208,7 @@ class PersonnelController extends AbstractController
     	$response->send();
     }
 
-    // Edition des employés
+    // Voir détail enployé
     /**
      * @Route ("/gest_personnel/{id}", name="employe_show")
     */
@@ -266,4 +266,9 @@ class PersonnelController extends AbstractController
             'formConge' => $form->createView()
         ]);
     }
+
+
+
+    
+
 }
