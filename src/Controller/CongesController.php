@@ -27,7 +27,19 @@ class CongesController extends AbstractController
 		$this->repository = $repository;
 	}
 
-    
+    // Affichage de tous les conges
+    /**
+     * @Route("/" , name="accueil_show")
+     */
+    public function index(): Response {
+
+        $conges = $this->repository->findAll();
+        return $this->render('personnel/accueil.html.twig', [
+            'tab' => 'bord',
+            'conges' => $conges
+        ]);
+
+    }
 
 
 
@@ -38,7 +50,7 @@ class CongesController extends AbstractController
     public function conges(): Response
     {
         $conges = $this->repository->findAll();
-    	return $this->render('personnel/gest_conges.html.twig', [
+    	return $this->render('personnel/gest_conges.htmL.twig', [
     		'conge' => 'conges',
             'conges' => $conges
     	]);
@@ -76,7 +88,7 @@ class CongesController extends AbstractController
                      ->add('etat', TextType::class, array(
                         'required' => true,
                         'attr' => array('class' => 'form-control' , 'hidden' => true ,
-                        'value' => 2)
+                        'value' => 'A valider')
                      ))
 
                      ->add('save', SubmitType::class, [

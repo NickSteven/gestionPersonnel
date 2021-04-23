@@ -36,14 +36,14 @@ class PersonnelController extends AbstractController
     /**
      * @Route("/", name="accueil_show")
      */
-    public function index(): Response
+    /*public function index(): Response
     {
         return $this->render('personnel/accueil.html.twig', [
             'controller_name' => 'PersonnelController',
             'tab' => 'bord'
 
         ]);
-    }
+    }*/
 
     // Route vers gestion personnel
     /**
@@ -253,7 +253,7 @@ class PersonnelController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $conge->setDateDemande(new \DateTime());
-            $conge->setEtat(1);
+            $conge->setEtat('En attente');
 
             $manager->persist($conge);
             $manager->flush();

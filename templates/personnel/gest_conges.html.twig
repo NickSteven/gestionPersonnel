@@ -26,6 +26,7 @@
                                                     <th scope="col">Date de départ</th>
                                                     <th scope="col">Date de retour</th>
                                                     <th scope="col">Motif</th>
+                                                    <th scope="col">Statut</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
@@ -38,6 +39,7 @@
                                                     <td>{{ conge.date_depart |date("d/m/Y")}}</td>
                                                     <td>{{ conge.date_retour |date("d/m/Y")}}</td>
                                                     <td>{{ conge.motif }}</td>
+                                                    <td>{{ conge.etat }}</td>
                                                     <td>
 
                                                     <a href="{{ path('valid_conges', {id: conge.id} )}}" class="btn btn-info"><i class="ti-check"></i>Valider</a>
