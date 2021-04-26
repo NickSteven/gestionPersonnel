@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/bootstrap.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/dataTables.bootstrap4.min.css') }}">
+{% endblock %}
+
 {% block body %}
 
 <div class="main-content-inner">
@@ -7,11 +12,35 @@
                     <!-- data table start -->
         <div class="col-12 mt-5">
             <div class="card">
-            <div class="card-body">
+                <div class="card-body">
+                    <table id="example" class="table text-center table-striped table-bordered" style="width:100%">
+        <thead style="background-color:#444444">
+            <tr style="color:white">
+                <th>Date de demande</th>
+                <th>Date de départ</th>
+                <th>Date de retour</th>
+                <th>Motif</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
         
-                            </div>
-                        </div>
-                    </div>
+        <tbody>
+            {% for conge in conges %}
+            <tr>
+                <td>{{ conge.date_demande |date("d/m/Y")}}</td>
+                <td>{{ conge.date_depart |date("d/m/Y")}}</td>
+                <td>{{ conge.date_retour |date("d/m/Y")}}</td>
+                <td>{{ conge.motif }}</td>
+                <td>{{ conge.etat }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    
+    </table>
+
+            </div>
+            </div>
+        </div>
                     <!-- data table end -->
                 </div>
             </div>
@@ -19,7 +48,15 @@
     {% endblock %}
 
     {% block javascripts %}
-    
+        {{ parent()}}
+    <script type="text/javascript" src="{{ asset('datatables/js/jquery-3.5.1.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('datatables/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('#example').DataTable();
+        } );
+    </script>
 
     {% endblock %}        
         
