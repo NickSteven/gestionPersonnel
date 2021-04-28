@@ -7,105 +7,20 @@
 	
 {% block body %}
 <div class="main-content-inner">
-              
-      
-                <div class="row">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+          {{ form_start(changer) }}
+          {{ form_widget(changer) }} 
+          {{ form_end(changer) }}
 
 
-                    
-                    <!-- data table start -->
-                    <div class="col-12 mt-5">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="header-title">Liste de demandes</h4>
-                                <div class="single-table">
-                                    <div class="table-responsive">
-                                        <table class="table text-center" id="conges">
-                                            <thead class="text-uppercase bg-secondary">
-                                                <tr class="text-white">
-                                                    <th scope="col">Date demande</th>
-                                                    <th scope="col">Date de départ</th>
-                                                    <th scope="col">Date de retour</th>
-                                                    <th scope="col">Motif</th>
-                                                    <th scope="col">Actions</th>
-                                                </tr>
-                                            </thead>
-
-                                            
-                                            	{% for conge in conge %}	
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{ conge.date_demande |date("d/m/Y")}}</td>
-                                                    <td>{{ conge.date_depart |date("d/m/Y")}}</td>
-                                                    <td>{{ conge.date_retour |date("d/m/Y")}}</td>
-                                                    <td>{{ conge.motif }}</td>
-                                                    <td>
-                                                    <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}">Valider</a>
-
-                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
-
-                                                    <a href="{{ path('valid_conges', {id: conge.id} )}}" class="btn btn-success">Valider</i></a>
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                            </tbody>
-                                        {% endfor %}
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- data table end -->
-
-
-
-                    <!-- Modal valider demande-->
-      
-                         <div class="modal fade" id="ValidModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                               <div class="modal-content">
-                                   <div class="modal-header">
-                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                   </div>
-                                   <div class="modal-body">
-                                        <strong>Etes-vous sûr de valider cette demande?</strong>
-                                  
-                                   </div>
-                                   <div class="modal-footer">
-                                        <input type="text"class="form-control cg" required>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                        <button type="submit" class="btn btn-success confirmer">Confirmer</button>
-                                   </div>
-                                    </div>
-                            </div>
-                         </div>
-
-                    <!-- Modal refuser demande-->
-      
-                         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                               <div class="modal-content">
-                                   <div class="modal-header">
-                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
-                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                   </div>
-                                   <div class="modal-body">
-                                        <strong>Etes-vous sûr de refuser cette demande?</strong> 
-                                   </div>
-                                   <div class="modal-footer">
-                                        <input type="hidden"class="form-control congid" required>
-                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                        <button type="submit" class="btn btn-danger supp">Confirmer</button>
-                                   </div>
-                                    </div>
-                            </div>
-                         </div>
-                  
-                </div>
-            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
 
 {% block javascripts %}

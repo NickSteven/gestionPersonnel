@@ -76,7 +76,7 @@ class CongesController extends AbstractController
 
     // Action pour la première validation
     /**
-     * @Route("/gest_conges/editer/{id}", name="valid_conges")
+     * @Route("/gest_conges/validerOne/{id}", name="valid_one")
      * @Method({"GET","POST"})
      */
     public function change(Request $request, $id) {
@@ -104,9 +104,48 @@ class CongesController extends AbstractController
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
+
+            return $this->redirectToRoute('conges_show');
         }
         return $this->render('conges/valider_conge.html.twig', array(
             'change' => $change->createView()
+        ));
+    }
+
+    // Action pour la deuxième validation
+    /**
+     * @Route("/gest_conges/validerTwo/{id}", name="valid_two")
+     */
+    public function changer(Request $request, $id) {
+        $conge = new Conges();
+
+        $conge = $this->getDoctrine()->getRepository(Conges::class)->find($id);
+
+        $changer = $this->createFormBuilder($conge)
+                     ->add('etat', TextType::class, array(
+                        'required' => true,
+                        'attr' => array('class' => 'form-control' , 'hidden' => true ,
+                        'value' => 'Validé')
+                     ))
+
+                     ->add('save', SubmitType::class, [
+                        
+                        'label' => 'Soumettre'
+                     ])
+                     ->getForm();
+
+        $changer->handleRequest($request);
+
+        if($changer->isSubmitted() && $changer->isValid()) {
+            
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->flush();
+
+            return $this->redirectToRoute('conges_show');
+        }
+        return $this->render('conges/conge_valid_final.html.twig', array(
+            'changer' => $changer->createView()
         ));
     }
 

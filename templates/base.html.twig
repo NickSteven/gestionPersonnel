@@ -77,17 +77,17 @@
                         <ul class="metismenu" id="menu">
                             
                             <li class="{% if tab is defined and tab == 'bord' %}active{% endif %}">
-                                <a href="{{ path('accueil_show') }}" aria-expanded="true"><i class="ti-dashboard"></i><span>Tableau de bord</span></a>
+                                <a href="{{ path('accueil_show') }}" style="text-decoration:none" aria-expanded="true"><i class="ti-dashboard"></i><span>Tableau de bord</span></a>
                             </li>
                             <li class="{% if personnel is defined and personnel == 'personnels' %}active{% endif %}">
-                                <a href="{{ path('personnel_show') }}" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Personnels
+                                <a href="{{ path('personnel_show') }}" style="text-decoration:none" aria-expanded="true"><i class="ti-layout-sidebar-left"></i><span>Personnels
                                     </span></a>
                             </li>
                             <li class="{% if conge is defined and conge == 'conges' %}active{% endif %}">
-                                <a href="{{ path('conges_show') }}" aria-expanded="true"><i class="ti-pie-chart"></i><span>Congés</span></a>
+                                <a href="{{ path('conges_show') }}" style="text-decoration:none" aria-expanded="true"><i class="ti-pie-chart"></i><span>Congés</span></a>
                             </li>
                             <li class="{% if permission is defined and permission == 'permissions' %}active{% endif %}">
-                                <a href="{{ path('permission_show') }}" aria-expanded="true"><i class="ti-palette"></i><span>Permisssions</span></a>
+                                <a href="{{ path('permission_show') }}" style="text-decoration:none" aria-expanded="true"><i class="ti-palette"></i><span>Permisssions</span></a>
                             </li>
                             
                         </ul>

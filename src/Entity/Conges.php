@@ -42,6 +42,12 @@ class Conges
      */
     private $etat;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="conges")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $users;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +109,18 @@ class Conges
     public function setEtat(string $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getUsers(): ?user
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?user $users): self
+    {
+        $this->users = $users;
 
         return $this;
     }

@@ -47,7 +47,7 @@ class PersonnelController extends AbstractController
 
     // Route vers gestion personnel
     /**
-     * @Route("/gest_personnel", name="personnel_show")
+     * @Route("/admin/gest_personnel", name="personnel_show")
      */
     public function personnel() {
 
@@ -252,8 +252,11 @@ class PersonnelController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+            $conge->setUsers($this->getUser());
             $conge->setDateDemande(new \DateTime());
             $conge->setEtat('En attente');
+
+
 
             $manager->persist($conge);
             $manager->flush();

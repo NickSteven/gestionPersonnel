@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Personnels{% endblock %}
+
+
+{% block body %}
+
+
+
+
+
+
+
+<div class="main-content-inner">
+                <div class="row">
+                    <!-- data table start -->
+                    <div class="col-12 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Liste des employés</h4>
+                                <div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="employes">
+                                            <thead class="text-uppercase bg-dark">
+                                                <tr class="text-white">
+                                                    <th scope="col">ID</th>
+                                                    <th scope="col">Nom d'utilisateur</th>
+                                                    <th scope="col">Nombre de congés demandé</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+
+                                            {% for user in users %}
+
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ user.id }}</th>
+                                                    <td>{{ user.username }}</td>
+                                                    <td>{{ user.conges|length }}</td>
+                                                    <td><button class="btn btn-primary">Modifier</button></td>
+                                                </tr>
+                                            </tbody>
+
+                                            {% endfor %}
+
+                                        </table>
+                                        <a class="btn btn-primary" href="{{ path('new_employe') }}"><i class="ti-plus"></i></a>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- data table end -->
+                    
+                  
+                </div>
+            </div>
+        </div>
+
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript">
+    const employes= document.getElementById('employes');
+
+if(employes){
+employes.addEventListener("click", e => {
+    if (e.target.className === 'btn btn-danger delete-employe') {
+        if (confirm('Etes-vous sûr?')) {
+            const id = e.target.getAttribute('data-id');
+
+            fetch(`/gest_personnel/delete/${id}`, {
+                method: 'DELETE'
+            }).then(res => window.location.reload());
+        }
+    }
+});
+}
+    </script>
+
+{% endblock %}
+

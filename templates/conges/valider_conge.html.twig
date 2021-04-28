@@ -1,14 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Editer employé{% endblock %}
+{% block title %}Valider congé{% endblock %}
 {% block body %}
 {% if app.user %}
-<div class="container">
- {{ form_start(change) }}
- {{ form_widget(change) }}
- {{ form_end(change) }}
-</div>
+<div class="main-content-inner">
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+ 					{{ form_start(change) }}
+ 					{{ form_widget(change) }} 
+ 					{{ form_end(change) }}
 
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 {% else %}
 <div class="container">
  <p>Vous devez d'abord connecter.</p>
