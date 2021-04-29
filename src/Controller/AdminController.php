@@ -28,8 +28,15 @@ class AdminController extends AbstractController
     * @Route("/utilisateurs", name="utilisateurs")
     */
     public function userList(UserRepository $users) {
+        
+        
     	return $this->render('admin/users.html.twig', [
     		'users' => $users->findAll()
     	]);
     }
+
+    /**
+    * Modifier les rôles des utilisateurs
+    *
+    */
 }

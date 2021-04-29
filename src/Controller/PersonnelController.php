@@ -32,19 +32,6 @@ class PersonnelController extends AbstractController
 		$this->repository = $repository;
 	}
 
-	// Route vers accueil
-    /**
-     * @Route("/", name="accueil_show")
-     */
-    /*public function index(): Response
-    {
-        return $this->render('personnel/accueil.html.twig', [
-            'controller_name' => 'PersonnelController',
-            'tab' => 'bord'
-
-        ]);
-    }*/
-
     // Route vers gestion personnel
     /**
      * @Route("/admin/gest_personnel", name="personnel_show")

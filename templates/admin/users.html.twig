@@ -25,6 +25,7 @@
                                                 <tr class="text-white">
                                                     <th scope="col">ID</th>
                                                     <th scope="col">Nom d'utilisateur</th>
+                                                    <th scope="col">Rôle</th>
                                                     <th scope="col">Nombre de congés demandé</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
@@ -36,8 +37,19 @@
                                                 <tr>
                                                     <td>{{ user.id }}</th>
                                                     <td>{{ user.username }}</td>
+                                                    <td>
+                                                        {% for role in user.roles %}
+                                                            {% if role == "ROLE_USER" %}
+                                                                Utilisateur
+                                                            {% elseif role == "ROLE_ADMIN" %}
+                                                                Administrateur
+                                                            {% elseif role == "ROLE_MODRATOR" %}
+                                                                Modérateur
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </td>
                                                     <td>{{ user.conges|length }}</td>
-                                                    <td><button class="btn btn-primary">Modifier</button></td>
+                                                    <td><a href="#" class="btn btn-primary">Modifier</a></td>
                                                 </tr>
                                             </tbody>
 

@@ -27,11 +27,27 @@ class CongesController extends AbstractController
 		$this->repository = $repository;
 	}
 
+
+    /**
+    * @Route("/", name="redirect")
+    */
+    public function index()
+    {
+
+        if($this->getUser()->getRoles('ROLE_USER'))
+            return $this->redirect($this->generateUrl('accueil_show'));
+        elseif($this->getUser()->getRoles('ROLE_ADMIN'))
+            return $this->redirect($this->generateUrl('conge_new'));
+        throw new \Exception(AccessDeniedException::class);
+    }
+
     // Affichage de tous les conges
     /**
-     * @Route("/" , name="accueil_show")
+     * @Route("/acccueil" , name="accueil_show")
      */
-    public function index(): Response {
+    public function dashboard(): Response {
+
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
         $conges = $this->repository->findAll();
         return $this->render('personnel/accueil.html.twig', [
@@ -49,6 +65,9 @@ class CongesController extends AbstractController
      */
     public function conges(): Response
     {
+        // Empêcher les utilisateurs à accéder au page gestion congé
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $conges = $this->repository->findAll();
     	return $this->render('personnel/gest_conges.htmL.twig', [
     		'conge' => 'conges',

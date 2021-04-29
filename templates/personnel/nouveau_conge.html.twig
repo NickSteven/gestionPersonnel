@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_user.html.twig' %}
 {% form_theme formConge 'bootstrap_4_layout.html.twig' %}
 
 {% block title %}Nouveau congé{% endblock %}
@@ -9,9 +9,13 @@
 	<div class="main-content-inner">
                 <div class="row">
                     <!-- data table start -->
-                    <div class="col-12 mt-5">
+                    <div class="col-10 mt-5">
                         <div class="card">
                             <div class="card-body">
+
+                                <h2>Veuillez remplir le formulaire ci-dessous:</h2>
+                                <br>
+                                <br>
                             	{{ form_start(formConge) }}
                             	{{ form_widget(formConge) }}
                             	{{ form_end(formConge) }}
