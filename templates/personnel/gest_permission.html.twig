@@ -2,14 +2,52 @@
 
 {% block title %}Permissions{% endblock %}
 {% block body %}
-{% if app.user %}
-<div class="container">
-<h1>GESTION PERMISSION ETO</h1>
-</div>
+<div class="main-content-inner">
+      <div class="row">
+            <div class="col-12 mt-5">
+             <div class="card">
+                 <div class="card-body">
+                 	<div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="conges">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Demandeur</th>
+                                                    <th scope="col">Date de permission</th>
+                                                    <th scope="col">Heure de départ</th>
+                                                    <th scope="col">Heure de retour</th>
+                                                    <th scope="col" >Motif</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            {% for permissions in permis %}	
+                                            <tbody>
+                                            	
+                                                <tr>
+                                                    <td>{{ permissions.username}}</td>
+                                                    <td>{{ permissions.date_permission | date("d/m/Y") }}</td>
+                                                    <td>{{ permissions.heure_depart | date("H:m") }}</td>
+                                                    <td>{{ permissions.heure_retour | date("H:m")}}</td>
+                                                    <td>{{ permissions.sujet }}</td>
+                                                    <td>
 
-{% else %}
- <div class="container">
- 	<p>Vous devez d'abord connecter.</p>
+                                                    <a href="#" class="btn btn-success"><i class="ti-check"></i>Valider</a>
+
+                                                    <a href="javascript:void(0);" class="btn btn-danger delete">Refuser</a>
+                                           
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                            </tbody>
+                                        {% endfor %}
+                                        </table>
+                                    </div>
+                         </div>
+                 </div>
+             </div>
+         </div>
+     </div>
  </div>
-{% endif %}
+
 {% endblock %}

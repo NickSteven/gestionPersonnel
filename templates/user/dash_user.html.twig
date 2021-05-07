@@ -1,0 +1,41 @@
+{% extends 'base_user.html.twig' %}
+{% block title %}Tableau de bord{% endblock %}
+{% block body %}
+
+<div class="main-content-inner">
+    <div class="row">
+                    <!-- data table start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                	<div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Date demande</th>
+                                                    <th scope="col">Date de permission</th>
+                                                    <th scope="col">Motif</th>
+                                                    <th scope="col">Etat</th>
+                                                </tr>
+                                            </thead>
+                                            {% for permission in permission %}
+                                            <tbody>
+                                                <tr>
+                                                    <th>{{ permission.date_demande | date("d/m/Y") }}</th>
+                                                    <th>{{ permission.date_permission | date("d/m/Y") }}</th>
+                                                    <th>{{ permission.sujet }}</th>
+                                                    <th>{{ permission.state }}</th>
+                                                </tr>
+                                            </tbody>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

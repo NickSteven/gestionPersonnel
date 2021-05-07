@@ -61,4 +61,10 @@ class CongesRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function affichTout() {
+        $query = $this->getEntityManager()->createQuery("SELECT * FROM conges");
+
+        return $query->getResult();
+    }
 }

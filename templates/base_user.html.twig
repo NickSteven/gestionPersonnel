@@ -24,6 +24,24 @@
     <script src="{{ asset('js/vendor/modernizr-2.8.3.min.js') }}"></script>
 </head>
 
+<!-- Si l'utilisateur n'est pas connecté -->
+{% if not app.user %}
+    <div id="preloader">
+    <div class="loader"></div>
+    </div>
+    <!-- preloader area end -->
+    <!-- error area start -->
+    <div class="error-area ptb--100 text-center">
+        <div class="container">
+            <div class="error-content">
+                <h2>oups!</h2>
+                <p>Veuillez d'abord vous connecter</p>
+                <a href="{{ path('security_login') }}">Conexion</a>
+            </div>
+        </div>
+    </div>
+{% else %}
+
 <body class="body-bg">
     <!--[if lt IE 8]>
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -46,24 +64,41 @@
                         <div class="horizontal-menu">
                             <nav>
                                 <ul id="nav_menu">
+
                                     <li>
-                                        <a href="javascript:void(0)"><i class="ti-dashboard" style="color: white"></i><span style="color: white">Mon tableau de bord</span></a>
+                                        <a href="#"><span style="color: white">ASSISTEO</span></a>
                                         
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)"><i class="ti-layout-sidebar-left" style="color: white"></i><span style="color: white">Demander un congé</span></a>
+                                        <a href="{{ path('user_dashboard') }}"><i class="ti-dashboard" style="color: white"></i><span style="color: white">Mon tableau de bord</span></a>
+                                        
                                     </li>
                                     <li>
-                                        <a href="javascript:void(0)"><i class="ti-pie-chart" style="color: white"></i><span style="color: white">Demander une permission</span style="color: white"></a>
+                                        <a href="{{ path('conge_new') }}"><i class="ti-layout-sidebar-left" style="color: white"></i><span style="color: white">Demander un congé</span></a>
                                     </li>
-                                    <li class="mega-menu">
-                                        <a href="javascript:void(0)"><i class="ti-palette" style="color: white"></i><span style="color: white">UI Features</span></a>
+                                    <li>
+                                        <a href="{{ path('permission_new') }}"><i class="ti-pie-chart" style="color: white"></i><span style="color: white">Demander une permission</span style="color: white"></a>
                                     </li>
+
+                                    
                                 </ul>
+
                             </nav>
+
+                        </div>
+
+                    </div>
+                    
+                    <!-- nav and search button -->
+                    <div class="col-md-3.999999999999999999999999 clearfix" style="margin-left: 150px">
+                        <div class="search-box col-lg-10">
+                            <button class="btn btn-secondary dropdown-toogle" type="button" data-toggle="dropdown" style="background-color: #303641"><i class="ti-user"></i>  {{ app.user.username }}</button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" sytle="text-decoation: none" href="#">Mon compte</a>
+                                            <a class="dropdown-item" href="{{ path('security_logout') }}">Se déconnecter</a>
+                                        </div>
                         </div>
                     </div>
-                    <!-- nav and search button -->
                     <!-- mobile_menu -->
                     <div class="col-12 d-block d-lg-none">
                         <div id="mobile_menu"></div>
@@ -262,6 +297,7 @@
             </div>
         </div>
     </div>
+{% endif %}
     <!-- offset area end -->
     <!-- jquery latest version -->
     <script src="{{ asset('js/vendor/jquery-2.2.4.min.js') }}"></script>

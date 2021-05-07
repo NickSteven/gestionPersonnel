@@ -1,0 +1,36 @@
+{% extends 'base_user.html.twig' %}
+{% block title %}Nouvelle permission{% endblock %}
+
+{% block body %}
+	<div class="main-content-inner">
+    <div class="row">
+                    <!-- data table start -->
+        <div class="col-12 mt-5">
+            <div class="card">
+
+            	{% for alert in app.flashes('message') %}
+                            <div class="alert alert-success alert-dismissible fade show col-10 mt-3" role="alert">
+                                    {{ alert }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span class="fa fa-times"></span>
+                                    </button>
+                            </div>
+                      {% endfor %}
+
+                <div class="card-body">
+
+                	
+                	<h2>Veuillez remplir les informations ci-dessous:</h2>
+                                <br>
+                                <br>
+                            	{{ form_start(formPermission) }}
+                            	{{ form_widget(formPermission) }}
+                            	{{ form_end(formPermission) }}
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

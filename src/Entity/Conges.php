@@ -48,6 +48,12 @@ class Conges
      */
     private $users;
 
+
+    public function __toString()
+    {
+        return(string) $this->users;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

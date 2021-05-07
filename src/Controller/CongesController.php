@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Conges;
 use App\Repository\CongesRepository;
+use App\Entity\Permission;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -28,35 +29,36 @@ class CongesController extends AbstractController
 	}
 
 
-    /**
-    * @Route("/", name="redirect")
-    */
-    public function index()
-    {
-
-        if($this->getUser()->getRoles('ROLE_USER'))
-            return $this->redirect($this->generateUrl('accueil_show'));
-        elseif($this->getUser()->getRoles('ROLE_ADMIN'))
-            return $this->redirect($this->generateUrl('conge_new'));
-        throw new \Exception(AccessDeniedException::class);
-    }
-
     // Affichage de tous les conges
     /**
-     * @Route("/acccueil" , name="accueil_show")
+     * @Route("/" , name="accueil_show")
      */
-    public function dashboard(): Response {
+    public function dashboard(Request $request): Response {
+        // Accès seulement pour l'administrateur
+        $admin = $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
+        $this->redirectToRoute('user_dashboard');
 
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
+        //Requête d'affichage de tous les conges
         $conges = $this->repository->findAll();
+
+        //Requête d'affichage de tous les permissions
+        $em = $this->getDoctrine()->getManager();
+
+        $RAW_QUERY = "SELECT date_demande, state, username from permission, user where user.id = permission.users_id;";
+
+        $statement = $em->getConnection()->prepare($RAW_QUERY);
+        $statement->execute();
+
+        $permissions = $statement->fetchAll();
+
         return $this->render('personnel/accueil.html.twig', [
             'tab' => 'bord',
-            'conges' => $conges
+            'conges' => $conges,
+            'permissions' => $permissions
         ]);
 
     }
-
 
 
 	// Route vers gestion de congés
@@ -68,7 +70,16 @@ class CongesController extends AbstractController
         // Empêcher les utilisateurs à accéder au page gestion congé
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $conges = $this->repository->findAll();
+        //$conges = $this->repository->findAll();
+
+        //Affichage par requête
+        $em = $this->getDoctrine()->getManager();
+
+        $requete = "SELECT conges.id, date_depart, date_retour,motif, username from conges, user where conges.users_id = user.id and etat = 'En attente';";
+
+        $statement = $em->getConnection()->prepare($requete);
+        $statement->execute();
+        $conges = $statement->fetchAll();
     	return $this->render('personnel/gest_conges.htmL.twig', [
     		'conge' => 'conges',
             'conges' => $conges
@@ -181,6 +192,5 @@ class CongesController extends AbstractController
             'conge' => $conge
         ]);
     }
-
 
 }

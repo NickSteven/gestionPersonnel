@@ -5,8 +5,11 @@ namespace App\Controller;
 
 use App\Entity\Employe;
 use App\Entity\Conges;
+use App\Entity\user;
+use App\Entity\Permission;
 use App\Repository\EmployeRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use App\Repository\PermissionRepository;
+//use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,11 +76,22 @@ class PersonnelController extends AbstractController
 
     // Route vers gestion permission
     /**
-     * @Route ("/gest_permission", name="permission_show")
+     * @Route ("/admin/gest_permission", name="permission_show")
      */
-    public function permission() {
+    public function permissionList() {
+        $permission = $this->getDoctrine()->getRepository(Permission::class)->findAll();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $req = "SELECT permission.id, date_permission, heure_depart, heure_retour, sujet, username from permission, user where permission.users_id = user.id;";
+
+        $statement = $em->getConnection()->prepare($req);
+        $statement->execute();
+        $permission = $statement->fetchAll();
+
     	return $this->render('personnel/gest_permission.html.twig', [
-    		'permission' => 'permissions'
+    		'permission' => 'permissions',
+            'permis' => $permission
     	]);
     }
 
@@ -207,57 +221,7 @@ class PersonnelController extends AbstractController
     }
 
     // Demande congé
-    /**
-     * @Route("/nouveau_conge", name="conge_new")
-     */
-    public function new_conge(Request $request, ObjectManager $manager) {
-        $conge = new Conges();
-
-        $form = $this->createFormBuilder($conge)
-                     ->add('date_depart', DateType::class, [
-                        
-                        'label' => 'Date de départ:',
-                        'required' => TRUE,
-                        'widget' => 'single_text',
-                        
-                    ])
-                     ->add('date_retour', DateType::class, [
-                        
-                        'label' => 'Date de retour:',
-                        'required' => TRUE,
-                        'widget' => 'single_text',
-                     ])
-                     ->add('motif', TextareaType::class, [
-                        
-                     ])
-                     ->add('save', SubmitType::class, [
-                        
-                        'label' => 'Soumettre'
-                     ])
-                     ->getForm();
-
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $conge->setUsers($this->getUser());
-            $conge->setDateDemande(new \DateTime());
-            $conge->setEtat('En attente');
-
-
-
-            $manager->persist($conge);
-            $manager->flush();
-
-            return $this->redirectToRoute('conge_new');
-        }
-
-
-        return $this->render('personnel/nouveau_conge.html.twig', [
-            'formConge' => $form->createView()
-        ]);
-    }
-
-
+    
 
     
 

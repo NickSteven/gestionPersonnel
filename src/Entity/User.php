@@ -48,11 +48,21 @@ class User implements UserInterface
      */
     private $conges;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Permission::class, mappedBy="users", orphanRemoval=true)
+     */
+    private $permissions;
+
     public function __construct()
     {
         $this->conges = new ArrayCollection();
+        $this->permissions = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return(string) $this->users;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -125,6 +135,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($conge->getUsers() === $this) {
                 $conge->setUsers(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Permission[]
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): self
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions[] = $permission;
+            $permission->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): self
+    {
+        if ($this->permissions->removeElement($permission)) {
+            // set the owning side to null (unless already changed)
+            if ($permission->getUsers() === $this) {
+                $permission->setUsers(null);
             }
         }
 

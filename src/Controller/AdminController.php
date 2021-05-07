@@ -34,9 +34,4 @@ class AdminController extends AbstractController
     		'users' => $users->findAll()
     	]);
     }
-
-    /**
-    * Modifier les rôles des utilisateurs
-    *
-    */
 }

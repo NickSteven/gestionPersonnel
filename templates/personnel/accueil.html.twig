@@ -3,57 +3,122 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/bootstrap.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('datatables/css/dataTables.bootstrap4.min.css') }}">
+
+
 {% endblock %}
 
 {% block body %}
 
 <div class="main-content-inner">
+
+
+    <!-- Le div pour la statistique sur le dashboard sera ici -->
+
+    <div class="row">       
+        <div class="col-5 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h1>Dashboard1</h1>
+                </div>
+            </div>
+        </div>
+        <div class="col-7 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h1>Dashboard2</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="row">
-                    <!-- data table start -->
+                    
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
-        <h3>Liste des congés</h3>
-        <table id="example" class="table text-center table-striped table-bordered" style="width:100%">
-        <thead style="background-color:#444444">
-            <tr style="color:white">
-                <th>Date de demande</th>
-                <th>Date de départ</th>
-                <th>Date de retour</th>
-                <th>Motif</th>
-                <th>Statut</th>
-            </tr>
-        </thead>
-        
-        <tbody>
-            {% for conge in conges %}
-            <tr>
-                <td>{{ conge.date_demande |date("d/m/Y")}}</td>
-                <td>{{ conge.date_depart |date("d/m/Y")}}</td>
-                <td>{{ conge.date_retour |date("d/m/Y")}}</td>
-                <td>{{ conge.motif }}</td>
-                <td>
-                    {% if conge.etat == "En attente" %}
-                        <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
-                    {% elseif conge.etat == "A valider" %}
-                        <span class="badge badge-primary" style="background-color:#007bff">A valider</span>
-                    {% elseif conge.etat == "Refusé" %}
-                        <span class="badge badge-danger" style="background-color:#dc3545">Refusé</span>
-                    {% elseif conge.etat == "Validé" %}
-                        <span class="badge badge-success" style="background-color:#28a745">Validé</span>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    
-    </table>
-
-            </div>
+                <h3>Congés</h3>
+                    <!-- Début du datatable -->
+                        <table id="conges" class="table text-center table-striped table-bordered" style="width:100%">
+                        <thead style="background-color:#444444">
+                            <tr style="color:white">
+                                <th>Date de demande</th>
+                                <th>Date de départ</th>
+                                <th>Date de retour</th>
+                                <th>Motif</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {% for conge in conges %}
+                            <tr>
+                                <td>{{ conge.date_demande |date("d/m/Y")}}</td>
+                                <td>{{ conge.date_depart |date("d/m/Y")}}</td>
+                                <td>{{ conge.date_retour |date("d/m/Y")}}</td>
+                                <td>{{ conge.motif }}</td>
+                                <td>
+                                    {% if conge.etat == "En attente" %}
+                                        <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
+                                    {% elseif conge.etat == "A valider" %}
+                                        <span class="badge badge-primary" style="background-color:#007bff">A valider</span>
+                                    {% elseif conge.etat == "Refusé" %}
+                                        <span class="badge badge-danger" style="background-color:#dc3545">Refusé</span>
+                                    {% elseif conge.etat == "Validé" %}
+                                        <span class="badge badge-success" style="background-color:#28a745">Validé</span>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
             </div>
         </div>
-                    <!-- data table end -->
-                </div>
+            <!-- data table end -->
+
+
+
+    <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                <h3>Permissions</h3>
+                        <table id="permissions" class="table text-center table-striped table-bordered" style="width:100%">
+                        <thead style="background-color:#444444">
+                            <tr style="color:white">
+                                <th>Date de permission</th>
+                                <th>Demandeur</th>
+                                <th>Etat du demande</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                            {% for permission in permissions %}
+                            <tr>
+                                <td>{{ permission.date_demande |date("d/m/Y")}}</td>
+                                <td>{{ permission.username }}</td>
+                                <td>
+                                    {% if permission.state == "En attente" %}
+                                        <span class="badge badge-waring" style="background-color:#ffc107">En attente</span>
+                                    {% elseif permission.state == "A valider" %}
+                                        <span class="badge badge-primary" style="background-color:#007bff">A valider</span>
+                                    {% elseif permission.state == "Refusé" %}
+                                        <span class="badge badge-danger" style="background-color:#dc3545">Refusé</span>
+                                    {% elseif permission.state == "Validé" %}
+                                        <span class="badge badge-success" style="background-color:#28a745">Validé</span>
+                                    {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+
+
             </div>
                 
     {% endblock %}
@@ -65,7 +130,13 @@
     <script type="text/javascript" src="{{ asset('datatables/js/dataTables.bootstrap4.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-        $('#example').DataTable();
+        $('#conges').DataTable();
+        } );
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+        $('#permissions').DataTable();
         } );
     </script>
 
