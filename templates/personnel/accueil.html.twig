@@ -19,17 +19,22 @@
             <div class="card">
                 <div class="card-body">
                     <h1>Dashboard1</h1>
+
+                    
                 </div>
             </div>
         </div>
         <div class="col-7 mt-5">
             <div class="card">
                 <div class="card-body">
-                    <h1>Dashboard2</h1>
-                </div>
-            </div>
+                    <!-- id contenant le donut chart-->
+                    <div id="donutchart" style="width: 450px; height: 400px;"></div>
+                  </div>  
+            
         </div>
     </div>
+
+    <p id="haha">dssds</p>
 
 
     <div class="row">
@@ -118,13 +123,29 @@
 
     </div>
 
-
-            </div>
+    {% for rol in app.user.roles %}
+                        </i><input type="hidden" id="role" value="{{ rol }}" disabled>
+                    {% endfor %}
+    </div>
                 
     {% endblock %}
 
     {% block javascripts %}
         {{ parent()}}
+    <script type="text/javascript">
+    $(document).ready(function() {
+        var str = $('#role').val();
+        if(str == "ROLE_ADMIN"){
+            return true;
+        } else{
+            window.location = "http://localhost:8000/user/dashboard";
+        }
+
+
+
+    });
+
+    </script>
     <script type="text/javascript" src="{{ asset('datatables/js/jquery-3.5.1.js') }}"></script>
     <script type="text/javascript" src="{{ asset('datatables/js/jquery.dataTables.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('datatables/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -139,6 +160,32 @@
         $('#permissions').DataTable();
         } );
     </script>
+    <script type="text/javascript" src="{{ asset('js/loader.js') }}"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['', ''],
+
+          //Eto ny boucle no mipetraka
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          pieHole: 0.5,
+          chartArea:{left:60,top:0,width:'100%',height:'100%'}
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('donutchart'));
+        chart.draw(data, options);
+      }
+    </script>
+    
 
     {% endblock %}        
         
