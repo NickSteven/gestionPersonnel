@@ -70,7 +70,7 @@ class CongesController extends AbstractController
         // Empêcher les utilisateurs à accéder au page gestion congé
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        //$conges = $this->repository->findAll();
+        
 
         //Affichage par requête
         $em = $this->getDoctrine()->getManager();
@@ -86,60 +86,36 @@ class CongesController extends AbstractController
     	]);
     }
 
-    // Suppression d'un demande de congé
+    //Premier validation de congé (premier validation)
     /**
-     * @Route("/gest_conges/delete/{id}" , name="conge_delete")
-     * @Method({"DELETE"})
+     * @Route("/gest_conges/validate/{id}", name="validate")
+     * @Method({"POST"})
      */
-    public function delete(Request $request, $id) {
-    	$conge = $this->getDoctrine()->getRepository(Conges::class)->find($id);
+    public function validate(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
 
-    	$entityManager = $this->getDoctrine()->getManager();
-    	$entityManager->remove($conge);
-    	$entityManager->flush();
-
-    	$response = new Response();
-    	$response->send();
+        //mise en place du requête de validation
+        $query = "UPDATE `conges` SET `etat` = 'A valider' WHERE `conges`.`id` = $id ;";
+        $statement = $em->getConnection()->prepare($query);
+        $statement->execute();
 
         return $this->redirectToRoute('conges_show');
     }
 
-    // Action pour la première validation
+    // Annulation d'une demande de congé
     /**
-     * @Route("/gest_conges/validerOne/{id}", name="valid_one")
-     * @Method({"GET","POST"})
+     * @Route("/gest_conges/refuse/{id}" , name="conge_delete")
+     * @Method({"POST"})
      */
-    public function change(Request $request, $id) {
-        $conge = new Conges();
+    public function delete(Request $request, $id) {
+    	$em = $this->getDoctrine()->getManager();
 
-        $conge = $this->getDoctrine()->getRepository(Conges::class)->find($id);
+        //mise en place du requête d'annulation
+        $query = "UPDATE `conges` SET `etat` = 'Refusé' WHERE `conges`.`id` = $id ;";
+    	$statement = $em->getConnection()->prepare($query);
+        $statement->execute();
 
-        $change = $this->createFormBuilder($conge)
-                     ->add('etat', TextType::class, array(
-                        'required' => true,
-                        'attr' => array('class' => 'form-control' , 'hidden' => true ,
-                        'value' => 'A valider')
-                     ))
-
-                     ->add('save', SubmitType::class, [
-                        
-                        'label' => 'Soumettre'
-                     ])
-                     ->getForm();
-
-        $change->handleRequest($request);
-
-        if($change->isSubmitted() && $change->isValid()) {
-            
-
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->flush();
-
-            return $this->redirectToRoute('conges_show');
-        }
-        return $this->render('conges/valider_conge.html.twig', array(
-            'change' => $change->createView()
-        ));
+        return $this->redirectToRoute('conges_show');
     }
 
     // Action pour la deuxième validation

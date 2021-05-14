@@ -42,12 +42,9 @@
                                                     
                                                     <td>
 
-                                                    <a href="{{ path('valid_one', {id: conge.id} )}}" class="btn btn-info edit"><i class="ti-check"></i>Valider</a>
-
                                                     <a href="javascript:void(0);" class="btn btn-info valid" data-idcon="{{ conge.id }}">Valider</a>
 
                                                     <a href="javascript:void(0);" class="btn btn-danger delete" data-idconge="{{ conge.id }}">Refuser</a>
-
                                                     
                                                     </td>
                                                     
@@ -79,7 +76,6 @@
                                   
                                    </div>
                                    <div class="modal-footer">
-                                        <input type="text"class="form-control cg" required>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
                                         <button type="submit" class="btn btn-success confirmer">Confirmer</button>
                                    </div>
@@ -144,7 +140,7 @@ conges.addEventListener("click", e => {
 
         //fonction manova ny state an'ilay congé eto
         $('#ValidModal').on('click', '.confirmer', function() {
-            fetch(`skjaljskajs`, {
+            fetch(`/gest_conges/validate/${con}`, {
             }).then(res => window.location.reload());
         })
       });
@@ -160,7 +156,7 @@ conges.addEventListener("click", e => {
         $('.congid').val(congeid);
         
         $('#DeleteModal').on('click','.supp', function() {
-            fetch(`/gest_conges/delete/${congeid}`, {
+            fetch(`/gest_conges/refuse/${congeid}`, {
                 method: 'DELETE'
             }).then(res => window.location.reload());
         })
