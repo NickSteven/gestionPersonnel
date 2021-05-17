@@ -26,7 +26,7 @@
                                                     <th scope="col">Nom</th>
                                                     <th scope="col">Prénoms</th>
                                                     <th scope="col">Adresse</th>
-                                                    <th scope="col">Poste</th>
+                                                    <th scope="col">Fonction</th>
                                                     <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
@@ -36,9 +36,9 @@
                                             <tbody>
                                                 <tr>
                                                     <td>{{ employe.nom }}</th>
-                                                    <td>{{ employe.prenom }}</td>
-                                                    <td>{{ employe.adresse }}</td>
-                                                    <td>{{ employe.fonction }}</td>
+                                                    <td>{{ employe.prenom }}</th>
+                                                    <td>{{ employe.adresse }}</th>
+                                                    <td>{{ employe.fonction }}</th>
                                                     <td><a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-info"><i class="ti-eye"></i></a>
                                                         <a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success"><i class="ti-pencil-alt"></i></a>
                                                         <a id="button" class="btn btn-danger delete-employe" data-id="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
@@ -49,7 +49,6 @@
                                             {% endfor %}
 
                                         </table>
-                                        <a class="btn btn-primary" href="{{ path('new_employe') }}"><i class="ti-plus"></i></a>
                                     </div>
                                 </div>
                         </div>

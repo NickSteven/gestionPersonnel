@@ -38,11 +38,16 @@
         <div class="container">
             <div class="login-box ptb--100">
                 {{ form_start(form) }}
-                    <div class="login-form-head">
+                    
+                    <div class="login-form-body">
+                        <div class="login-form-head">
                         <h4>Inscription</h4>
                         <p>Veuillez remplir les informations ci-dessous.</p>
                     </div>
-                    <div class="login-form-body">
+                        {{ form_row(form.nom, {'label':'Nom:','attr': {'class':'form-control', 'placeholder': 'Votre nom', 'autocomplete':'off'}}) }}
+                        {{ form_row(form.prenom, {'label':'Prénom:','attr': {'class':'form-control', 'placeholder': 'Votre prénom', 'autocomplete':'off'}}) }}
+                        {{ form_row(form.adresse, {'label':'Adresse:','attr': {'class':'form-control', 'placeholder': 'Habitation', 'autocomplete':'off'}}) }}
+                        {{ form_row(form.fonction, {'label':'Fonction:','attr': {'class':'form-control', 'placeholder': 'Votre poste', 'autocomplete':'off'}}) }}
                         {{ form_row(form.username, {'label':'Nom d\'utilisateur:','attr': {'class':'form-control', 'placeholder': 'Nom d\'utilisateur', 'autocomplete':'off'}}) }}
 						{{ form_row(form.password, {'label':'Mot de passe:','attr': {'class':'form-control', 'placeholder': 'Mot de passe'}}) }}
 						{{ form_row(form.confirm_password, {'label':'Confirmer:','attr': {'class':'form-control', 'placeholder': 'Confirmer mot de passe'}}) }}

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Permissions{% endblock %}
+
 {% block body %}
 <div class="main-content-inner">
       <div class="row">
@@ -33,7 +34,7 @@
 
                                                     <a href="javascript:void(0);" class="btn btn-success valider" data-per="{{ permissions.id }}"><i class="ti-check"></i>Valider</a>
 
-                                                    <a href="javascript:void(0);" class="btn btn-danger delete" data-per="{{ permissions.id }}">Refuser</a>
+                                                    <a href="javascript:void(0);" class="btn btn-danger refuser" data-per="{{ permissions.id }}">Refuser</a>
                                            
                                                     </td>
                                                     
@@ -57,17 +58,38 @@
                                   
                                    </div>
                                    <div class="modal-footer">
-                                        <input type="text"class="form-control cg" required>
+                                        <input type="text"class="form-control pr" required>
                                         <input type="text" value="A valider" disabled>
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
-                                        <button type="submit" class="btn btn-success confirmer">Confirmer</button>
+                                        <button type="submit" class="btn btn-success confirmer" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                  </div>
+                            </div>
+                         </div>
+
+                         <!-- Modal refuser demande-->
+      
+                         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Etes-vous sûr de refuser cette demande?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger ref" data-dismiss="modal">Confirmer</button>
                                    </div>
                                     </div>
                             </div>
                          </div>
 
 
-                                    </div>
+                                </div>
                          </div>
                  </div>
              </div>
@@ -75,24 +97,38 @@
      </div>
  </div>
  {% block javascripts %}
-  <script src="{{ asset('jss/bootstrap.js') }}"></script>
   <script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+  <script src="{{ asset('jss/bootstrap.js') }}"></script>
+  
   {{ parent() }}
-  <script type="text/javascript">
+  <script>
   $(document).ready(function(){
-    //Validation du permission
+    //Validation du permission via modal
     $('#permissions').on('click', '.valider',function(){
       const per = $(this).data('per');
       $('#ValidModal').modal('show');
+      $('.pr').val(per);
 
       $('#ValidModal').on('click', '.confirmer', function() {
-        fetch(`/gest_conges/valider/${per}`, {
+        fetch(`/gest_permission/valider/${per}`, {
         }).then(res => window.location.reload());
       })
 
     });
 
-  };
+
+    //Refuser du permission via modal
+    $('#permissions').on('click', '.refuser',function(){
+      const permi = $(this).data('per');
+      $('#DeleteModal').modal('show');
+
+      $('#DeleteModal').on('click', '.ref', function() {
+        fetch(`/gest_permission/refuser/${permi}`, {
+        }).then(res => window.location.reload());
+      })
+    })
+
+  });
   </script>
  {% endblock %}
 

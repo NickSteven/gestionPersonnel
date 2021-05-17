@@ -5,11 +5,12 @@ namespace App\Controller;
 
 use App\Entity\Employe;
 use App\Entity\Conges;
-use App\Entity\user;
+use App\Entity\User;
 use App\Entity\Permission;
+use App\Entity\UserRepository;
 use App\Repository\EmployeRepository;
 use App\Repository\PermissionRepository;
-//use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,19 +42,7 @@ class PersonnelController extends AbstractController
      */
     public function personnel() {
 
-    	/*$employe = new Employe();
-    	$employe->setNom("Test")
-    			->setPrenom("Teste")
-    			->setAdresse("Tana")
-    			->setFonction("DG");
-    	$em = $this->getDoctrine()->getManager();
-    	$em->persist($employe);
-    	$em->flush();
-
-    	$repository = $this->getDoctrine()->getRepository(Employe::class);
-    	dump($repository);*/
-
-    	$employes = $this->repository->findall();
+    	$employes = $this->getDoctrine()->getRepository(User::class)->findAll();
     	
     	return $this->render('personnel/gest_personnels.html.twig',[
     		'personnel' => 'personnels',
@@ -95,52 +84,36 @@ class PersonnelController extends AbstractController
     	]);
     }
 
-    // Création d'un nouveau employé
     /**
-     * @Route("/gest_personnel/new", name="new_employe")
-     * Method({"GET", "POST"})
+     * Validation permission (premier validation)
+     * @Route("/gest_permission/valider/{id}", name="permission_vaider")
+     * @Method({"POST"})
      */
-    public function new(Request $request) {
-    	$employe = new Employe();
+    public function validerPermission(Request $request, $id) {
+        $em = $this->getDoctrine()->getManager();
 
-    	$form = $this->createFormBuilder($employe)
-    				 ->add('nom', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('prenom', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('adresse', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('fonction', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('save', SubmitType::class, array(
-    				 	'label' => 'Ajouter',
-    				 	'attr' => array('class' => 'btn btn-primary margin-top-3')
-    				 ))
-    				 ->getForm();
+        // Requête de validation
+        $req = "UPDATE `permission` SET `state` = 'A valider' WHERE `permission`.`id` = $id ;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
 
-    	$form->handleRequest($request);
+        return true;
+    }
 
-    	if($form->isSubmitted() && $form->isValid()) {
-    		$employe = $form->getData();
+    /**
+     * Refus d'une permission
+     * @Route("/gest_permission/refuser/{id}", name="permission_refuser")
+     * @Method({"POST"})
+     */
+    public function refuserPermission($id) {
+        $em = $this->getDoctrine()->getManager();
 
-    		$entityManager = $this->getDoctrine()->getManager();
-    		$entityManager->persist($employe);
-    		$entityManager->flush();
+        // Requête pour le refus
+        $req = "UPDATE `permission` SET `state` = 'Refusé' WHERE `permission`.`id` = $id;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
 
-    		return $this->redirectToRoute('personnel_show');
-    	}
-
-    	return $this->render('personnel/nouveau.html.twig', array(
-    		'form' => $form->createView()
-    	));
+        return true;
     }
 
     // Editer un employé

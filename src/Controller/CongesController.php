@@ -88,10 +88,10 @@ class CongesController extends AbstractController
 
     //Premier validation de congé (premier validation)
     /**
-     * @Route("/gest_conges/validate/{id}", name="validate")
+     * @Route("/gest_conges/validate/{id}", name="conges_validate")
      * @Method({"POST"})
      */
-    public function validate(Request $request, $id) {
+    public function validerConge(Request $request, $id) {
         $em = $this->getDoctrine()->getManager();
 
         //mise en place du requête de validation
@@ -99,7 +99,7 @@ class CongesController extends AbstractController
         $statement = $em->getConnection()->prepare($query);
         $statement->execute();
 
-        return $this->redirectToRoute('conges_show');
+        return true;
     }
 
     // Annulation d'une demande de congé
