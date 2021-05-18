@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Form\EmployeType;
+use App\Form\EditUserType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -50,18 +50,44 @@ class PersonnelController extends AbstractController
     	]);
     }
 
-    
-    /**
-     * @Route("/gest_conges", name="conges_show")
-     */
-    /*public function conges() {
 
-        $conges = $this->repository->findAll();
-    	return $this->render('personnel/gest_conges.html.twig', [
-    		'conge' => 'conges',
-            'conges' => $conges
-    	]);
-    }*/
+    // Editer un employé
+    /**
+     * @Route("/gest_personnel/edit/{id}", name="edit_employe")
+     */
+    public function editEmploye(User $user, Request $request) {
+        $formUser = $this->createForm(EditUserType::class, $user);
+        $formUser->handleRequest($request);
+
+        if($formUser->isSubmitted() && $formUser->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user);
+            $em->flush();
+
+            $this->addFlash('message', 'Utilisateur modifié avec succès');
+            return $this->redirectToRoute('personnel_show');
+        }
+        return $this->render('personnel/edit_user.html.twig', [
+            'userForm' => $formUser->createView()
+        ]);
+        
+    }
+
+    // Suppression d'un employé
+    /**
+     * @Route("/gest_personnel/delete/{id}", name="supp_employe")
+     * @Method({"DELETE"})
+    */
+    public function delete(Request $request, $id) {
+        $employe = $this->getDoctrine()->getRepository(User::class)->find($id);
+
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($employe);
+        $entityManager->flush();
+
+        $response = new Response();
+        $response->send();
+    }
 
     // Route vers gestion permission
     /**
@@ -116,71 +142,6 @@ class PersonnelController extends AbstractController
         return true;
     }
 
-    // Editer un employé
-    /**
-     * @Route("/gest_personnel/edit/{id}", name="edit_employe")
-     * Method({"GET", "POST"})
-     */
-    public function edit(Request $request, $id) {
-    	$employe = new Employe();
-
-    	$employe = $this->getDoctrine()->getRepository(Employe::class)->find($id);
-
-    	$form = $this->createFormBuilder($employe)
-    				 ->add('nom', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('prenom', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('adresse', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('fonction', TextType::class, array(
-    				 	'required' => true,
-    				 	'attr' => array('class' => 'form-control')
-    				 ))
-    				 ->add('save', SubmitType::class, array(
-    				 	'label' => 'Mettre à jour',
-    				 	'attr' => array('class' => 'btn btn-primary margin-top-3')
-    				 ))
-    				 ->getForm();
-
-    	$form->handleRequest($request);
-
-    	if($form->isSubmitted() && $form->isValid()) {
-    		
-
-    		$entityManager = $this->getDoctrine()->getManager();
-    		$entityManager->flush();
-
-    		return $this->redirectToRoute('personnel_show');
-    	}
-
-    	return $this->render('personnel/edit.html.twig', array(
-    		'form' => $form->createView()
-    	));
-    }
-
-
-    // Suppression d'un employé
-    /**
-     * @Route("/gest_conges/delete/{id}")
-     * @Method({"DELETE"})
-    */
-    public function delete(Request $request, $id) {
-    	$employe = $this->getDoctrine()->getRepository(Employe::class)->find($id);
-
-    	$entityManager = $this->getDoctrine()->getManager();
-    	$entityManager->remove($employe);
-    	$entityManager->flush();
-
-    	$response = new Response();
-    	$response->send();
-    }
 
     // Voir détail enployé
     /**

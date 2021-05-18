@@ -25,6 +25,7 @@
                                                 <tr class="text-white">
                                                     <th scope="col">Nom</th>
                                                     <th scope="col">Prénoms</th>
+                                                    <th scope="col">Nom d'utilisateur</th>
                                                     <th scope="col">Adresse</th>
                                                     <th scope="col">Fonction</th>
                                                     <th scope="col">Actions</th>
@@ -37,11 +38,13 @@
                                                 <tr>
                                                     <td>{{ employe.nom }}</th>
                                                     <td>{{ employe.prenom }}</th>
+                                                    <td>{{ employe.username }}</th>
                                                     <td>{{ employe.adresse }}</th>
                                                     <td>{{ employe.fonction }}</th>
-                                                    <td><a href="{{ path('employe_show', {id: employe.id} )}}" class="btn btn-info"><i class="ti-eye"></i></a>
+                                                    <td>
                                                         <a href="{{ path('edit_employe', {id: employe.id} )}}" class="btn btn-success"><i class="ti-pencil-alt"></i></a>
-                                                        <a id="button" class="btn btn-danger delete-employe" data-id="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
+
+                                                        <a href="javascript:void(0);" class="btn btn-danger supp" data-userid="{{ employe.id }}"><i class="ti-trash" style="color:white"></i></a>
                                                     </td>
                                                 </tr>
                                             </tbody>
@@ -54,7 +57,27 @@
                         </div>
                     </div>
                     <!-- data table end -->
-                    
+
+                    <!-- Modal supprimer employé-->
+      
+                         <div class="modal fade" id="DeleteModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Supprimer cette utilisateur?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger del" data-dismiss="modal">Supprimer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
                   
                 </div>
             </div>
@@ -66,24 +89,25 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
-    <script type="text/javascript">
-    const employes= document.getElementById('employes');
+<script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+<script src="{{ asset('jss/bootstrap.js') }}"></script>
+{{ parent() }}
+<script type="text/javascript">
+$(document).ready(function(){
 
-if(employes){
-employes.addEventListener("click", e => {
-    if (e.target.className === 'btn btn-danger delete-employe') {
-        if (confirm('Etes-vous sûr?')) {
-            const id = e.target.getAttribute('data-id');
-
-            fetch(`/gest_personnel/delete/${id}`, {
+    $('#employes').on('click','.supp',function(){
+        const user = $(this).data('userid'); // Ty ny maka an'ilay id ho supprimena
+        $('#DeleteModal').modal('show');
+        
+        $('#DeleteModal').on('click','.del', function() {
+            fetch(`/gest_personnel/delete/${user}`, {
                 method: 'DELETE'
             }).then(res => window.location.reload());
-        }
-    }
+        })
+        });
+
 });
-}
-    </script>
+</script>
 
 {% endblock %}
 

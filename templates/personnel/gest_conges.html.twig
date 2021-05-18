@@ -112,24 +112,6 @@
     <script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
     <script src="{{ asset('jss/bootstrap.js') }}"></script>
 	{{ parent() }}
-	<!--<script type="text/javascript">
-	
-const conges= document.getElementById('conges');
-console.log(conges);
-if(conges){
-conges.addEventListener("click", e => {
-	if (e.target.className === 'btn btn-danger delete-conge') {
-		if (confirm('Etes-vous sûr?')) {
-			const id = e.target.getAttribute('id-conge');
-
-			fetch(`/gest_conges/delete/${id}`, {
-				method: 'DELETE'
-			}).then(res => window.location.reload());
-		}
-	}
-});
-}
-</script>-->
 <script>
     $(document).ready(function(){
         //Premier validation du demande      
@@ -151,7 +133,6 @@ conges.addEventListener("click", e => {
         //Annulation de congé
         $('#conges').on('click','.delete',function(){
         var congeid = $(this).data('idconge'); // Ty ny maka an'ilay id ho supprimena
-        var link = // Ny maka an le lien eto koa tsy haiko xD
         $('#DeleteModal').modal('show');
         $('.congid').val(congeid);
         
