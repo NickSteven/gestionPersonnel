@@ -4,19 +4,63 @@
 
 <div class="main-content-inner">
     <div class="row">
-                    <!-- data table start -->
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
+                    <h3>Liste de vos congés</h3>
                 	<div class="single-table">
                                     <div class="table-responsive">
-                                        <table class="table text-center">
+                                        <table class="table text-center" id="con">
+                                            <thead class="text-uppercase bg-secondary">
+                                                <tr class="text-white">
+                                                    <th scope="col">Date demande</th>
+                                                    <th scope="col">Motif</th>
+                                                    <th scope="col">Etat</th>
+                                                    <th scope="col">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            {% for conges in conges %}
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ conges.date_demande | date("d/m/Y") }}</td>
+                                                    <td>{{ conges.motif}}</td>
+                                                    <td>{{ conges.etat }}</td>
+                                                    <td>
+                                                        {% if conges.etat == "En attente" %}
+                                                        <a href="/conge/editer/{{ conges.id }}" class="btn btn-info">Modifier</a>
+                                                        <a href="javascript:void(0);" class="btn btn-danger delete" data-idcon="{{ conges.id }}">Supprimer</a>
+                                                        {% elseif conges.etat == "A valider" %}
+                                                        <p>En attente d'approbation</p>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            {% endfor %}
+                                        </table>
+                                    </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-12 mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Liste de vos permissions</h3>
+                    <div class="single-table">
+                                    <div class="table-responsive">
+                                        <table class="table text-center" id="per">
                                             <thead class="text-uppercase bg-secondary">
                                                 <tr class="text-white">
                                                     <th scope="col">Date demande</th>
                                                     <th scope="col">Date de permission</th>
                                                     <th scope="col">Motif</th>
                                                     <th scope="col">Etat</th>
+                                                    <th scope="col">Actions</th>
                                                 </tr>
                                             </thead>
                                             {% for permission in permission %}
@@ -26,6 +70,10 @@
                                                     <th>{{ permission.date_permission | date("d/m/Y") }}</th>
                                                     <th>{{ permission.sujet }}</th>
                                                     <th>{{ permission.state }}</th>
+                                                    <th>
+                                                        <a href="/permission/editer/{{ permission.id }}" class="btn btn-info">Modifier</a>
+                                                        <a href="javascript:void(0);" class="btn btn-danger supprimer" data-idper="{{ permission.id }}">Retirer</a>
+                                                    </th>
                                                 </tr>
                                             </tbody>
                                             {% endfor %}
@@ -36,6 +84,80 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal annuler congé-->
+      
+                         <div class="modal fade" id="DeleteConge" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Annuler la demande de congé?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger supp" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
+
+    <!-- Modal annuler permission-->
+      
+                         <div class="modal fade" id="DeletePermission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Confirmation</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        <strong>Annuler la demande de permission?</strong> 
+                                   </div>
+                                   <div class="modal-footer">
+                                        <input type="hidden"class="form-control congid" required>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                                        <button type="submit" class="btn btn-danger supp" data-dismiss="modal">Confirmer</button>
+                                   </div>
+                                    </div>
+                            </div>
+                         </div>
+
 </div>
+{% block javascripts %}
+<script src="{{ asset('jss/jquery-3.4.1.js') }}"></script>
+<script src="{{ asset('jss/bootstrap.js') }}"></script>
+{{ parent() }}
+<script type="text/javascript">
+$(document).ready(function() {
+    //Annulation de congé
+        $('#con').on('click','.delete',function(){
+        const congeid = $(this).data('idcon'); // Ty ny maka an'ilay id ho supprimena
+        $('#DeleteConge').modal('show');
+        
+        $('#DeleteConge').on('click','.supp', function() {
+            fetch(`/conge/supprimer/${congeid}`, {
+                method: 'DELETE'
+            }).then(res => window.location.reload());
+        })
+        });
+    //Annulation permission
+        $('#per').on('click','.supprimer', function() {
+        const permi = $(this).data('idper');
+        $('#DeletePermission').modal('show');
+
+        $('#DeletePermission').on('click','.supp', function() {
+            fetch(`/permission/supprimer/${permi}`, {
+                method: 'DELETE'
+            }).then(res => window.location.reload());
+        })
+        })
+});
+</script>
+{% endblock %}
 
 {% endblock %}

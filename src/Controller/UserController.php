@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\EmployeType;
+use App\Form\EditCongeType;
+use App\Form\EditPermissionType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TimeType;
@@ -34,10 +36,12 @@ class UserController extends AbstractController
     {
         $user = $this->getUser(); //Prend l'id de chaque utilisateur connecté
         $permission = $this->getDoctrine()->getRepository(Permission::class)->findByUsers($user);
+        $conges = $this->getDoctrine()->getRepository(Conges::class)->findByUsers($user);
 
         return $this->render('user/dash_user.html.twig', [
             'controller_name' => 'UserController',
             'permission' => $permission,
+            'conges' => $conges,
         ]);
     }
 
@@ -94,12 +98,42 @@ class UserController extends AbstractController
         ]);
     }
 
+    // **************** ACTIONS A FAIRE SUR LES CONGES POUR LES UTILISATEURS ****************
 
+    /**
+     * Editer un congé
+     * @Route("/conge/editer/{id}", name="conge_edit")
+     */
+     public function editerConge(Conges $conges, Request $request) {
+        $formConge = $this->createForm(EditCongeType::class, $conges);
+        $formConge->handleRequest($request);
 
+        if($formConge->isSubmitted() && $formConge->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($conges);
+            $em->flush();
 
-    //Editer congé
-    // ********************* A FAIRE ******************************
-    //Supprimer congé
+            $this->addFlash('message', 'Utilisateur modifié avec succès');
+            return $this->redirectToRoute('user_dashboard');
+        }
+        return $this->render('user/edit_conge.html.twig', [
+            'congeForm' => $formConge->createView()
+        ]);
+     }
+
+    /**
+     * Supprimer un congé
+     * @Route("/conge/supprimer/{id}", name="conge_supp")
+     * @Method({"DELETE"})
+     */
+    public function retirerDemandeConge($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $req = "DELETE from `conges` WHERE `conges`.`id` = $id;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
+        
+    }
 
 
 
@@ -155,12 +189,39 @@ class UserController extends AbstractController
     		'formPermission' => $formPermission->createView()]);
     }
 
-    // Lister les permissions pour l'utilisateurs connecté
     /**
-    * @Route("/user/mes_permission", name="permission_list")
-    */
-    public function permissionList(){
+     * Editer une permission
+     * @Route("/permission/editer/{id}", name="permission_edit")
+     */
+    public function editerPermission(Permission $permission, Request $request) {
+        $formPermission = $this->createForm(EditPermissionType::class, $permission);
+        $formPermission->handleRequest($request);
 
+        if($formPermission->isSubmitted() && $formPermission->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($permission);
+            $em->flush();
+
+            $this->addFlash('message', 'Utilisateur modifié avec succès');
+            return $this->redirectToRoute('user_dashboard');
+        }
+        return $this->render('user/edit_permission.html.twig', [
+            'permissionForm' => $formPermission->createView()
+        ]);
+    }
+
+    /**
+     * Supprimer une permission
+     * @Route("/permission/supprimer/{id}", name="permission_delete")
+     */
+    public function supprimerPermission($id) {
+        $em = $this->getDoctrine()->getManager();
+
+        $req = "DELETE from `permission` WHERE `permission`.`id` = $id;";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
+
+        return $this->redirectToRoute('user_dashboard');
     }
 
 

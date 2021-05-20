@@ -35,9 +35,6 @@ class CongesController extends AbstractController
      */
     public function dashboard(Request $request): Response {
         // Accès seulement pour l'administrateur
-        //$admin = $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        
-        $this->redirectToRoute('user_dashboard');
 
         //Requête d'affichage de tous les conges
         $conges = $this->repository->findAll();
@@ -57,7 +54,6 @@ class CongesController extends AbstractController
             'conges' => $conges,
             'permissions' => $permissions
         ]);
-        return $this->redirectToRoute('user_dashboard');
     }
 
 
@@ -168,5 +164,8 @@ class CongesController extends AbstractController
             'conge' => $conge
         ]);
     }
+
+
+    
 
 }
