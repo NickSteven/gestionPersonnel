@@ -26,7 +26,6 @@
     
    
     <!-- modernizr css -->
-    <script src="assets/js/vendor/modernizr-2.8.3.min.js"></script>
 
     {% block stylesheets %}
             {#{{ encore_entry_link_tags('app') }}#}
@@ -68,7 +67,7 @@
         <div class="sidebar-menu">
             <div class="sidebar-header">
                 <div class="logo">
-                    <a href="{{ path('accueil_show') }}"><img src="assets/images/icon/logo.png" alt="logo"></a>
+                    <a href="{{ path('accueil_show') }}"><img src="{{ asset('images/logo/logo_assisteo.png') }}" alt="logo"></a>
                 </div>
             </div>
             <div class="main-menu">
