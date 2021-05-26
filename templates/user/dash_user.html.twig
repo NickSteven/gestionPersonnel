@@ -4,7 +4,20 @@
 
 <div class="main-content-inner">
     <div class="row">
-        <div class="col-12 mt-5">
+
+
+        <div class="col-lg-6 mt-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="header-title">Solde congés</h4>
+                                <span class=""></span>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+        <div class="col-lg-6 mt-5">
             <div class="card">
                 <div class="card-body">
 
@@ -17,7 +30,7 @@
                             </div>
                     {% endfor %}
 
-                    <h3>Liste de vos congés</h3>
+                    <h3 class="header-title">Liste de vos congés</h3>
                 	<div class="single-table">
                                     <div class="table-responsive">
                                         <table class="table text-center" id="con">
@@ -41,6 +54,8 @@
                                                         <a href="javascript:void(0);" class="btn btn-danger delete" data-idcon="{{ conges.id }}">Supprimer</a>
                                                         {% elseif conges.etat == "A valider" %}
                                                         <p>En attente d'approbation</p>
+                                                        {% elseif conges.etat == "Refusé" %}
+                                                        <p>Aucune action à faire</p>
                                                         {% endif %}
                                                     </td>
                                                 </tr>
@@ -52,6 +67,8 @@
                 </div>
             </div>
         </div>
+
+
     </div>
 
 
