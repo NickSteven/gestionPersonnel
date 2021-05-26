@@ -7,6 +7,16 @@
         <div class="col-12 mt-5">
             <div class="card">
                 <div class="card-body">
+
+                    {% for alert in app.flashes('conge_success') %}
+                            <div class="alert alert-success alert-dismissible fade show col-10 mt-3" role="alert">
+                                    {{ alert }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span class="fa fa-times"></span>
+                                    </button>
+                            </div>
+                    {% endfor %}
+
                     <h3>Liste de vos congés</h3>
                 	<div class="single-table">
                                     <div class="table-responsive">
@@ -50,6 +60,14 @@
         <div class="col-9 mt-5">
             <div class="card">
                 <div class="card-body">
+                    {% for alert in app.flashes('permission_success') %}
+                            <div class="alert alert-success alert-dismissible fade show col-10 mt-3" role="alert">
+                                    {{ alert }}
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span class="fa fa-times"></span>
+                                    </button>
+                            </div>
+                      {% endfor %}
                     <h3>Liste de vos permissions</h3>
                     <div class="single-table">
                                     <div class="table-responsive">

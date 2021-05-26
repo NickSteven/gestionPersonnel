@@ -87,7 +87,7 @@ class UserController extends AbstractController
             $manager->persist($conge);
             $manager->flush();
 
-            $this->addFlash('message', 'Votre demande a bien été envoyée.');
+            $this->addFlash('conge_success', 'Votre demande de congé a bien été envoyée.');
 
             return $this->redirectToRoute('user_dashboard');
         }
@@ -180,9 +180,9 @@ class UserController extends AbstractController
     		$manager->persist($permission);
     		$manager->flush();
 
-    		$this->addFlash('message', 'Demande bien envoyée');
+    		$this->addFlash('permission_success', 'Votre demande de permission a bien été envoyée');
 
-    		$this->redirectToRoute('user_dashboard');
+    		return $this->redirectToRoute('user_dashboard');
     	}
 
     	return $this->render('user/nouvelle_permission.html.twig', [

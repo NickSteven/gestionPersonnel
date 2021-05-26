@@ -94,15 +94,14 @@ class PersonnelController extends AbstractController
      * @Route ("/admin/gest_permission", name="permission_show")
      */
     public function permissionList() {
-        $permission = $this->getDoctrine()->getRepository(Permission::class)->findAll();
-
         $em = $this->getDoctrine()->getManager();
 
-        $req = "SELECT permission.id, date_permission, heure_depart, heure_retour, sujet, username from permission, user where permission.users_id = user.id;";
+        //Requête pour afficher les permissions en attente
+        $req = "SELECT permission.id, username, date_permission, heure_depart, heure_retour, sujet from user, permission where user.id = permission.users_id and state = 'En attente';";
+        $stmt = $em->getConnection()->prepare($req);
+        $stmt->execute();
+        $permission = $stmt->fetchAll();
 
-        $statement = $em->getConnection()->prepare($req);
-        $statement->execute();
-        $permission = $statement->fetchAll();
 
     	return $this->render('personnel/gest_permission.html.twig', [
     		'permission' => 'permissions',
