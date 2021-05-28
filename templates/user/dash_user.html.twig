@@ -10,16 +10,27 @@
                         <div class="card">
                             <div class="card-body">
                                 <h4 class="header-title">Solde congés</h4>
+                                {% for soldes in solde %}
                                 <button type="button" class="btn btn-success btn-lg btn-block">
-                                    Votre solde <span class="badge badge-light">4</span>
+                                    Votre solde :
+                                    
+                                    <span class="badge badge-light">{{ soldes.initial }}</span>
+                                    
                                 </button>
                                 <button type="button" class="btn btn-primary btn-lg btn-block">
-                                    Congés utilisés <span class="badge badge-light">4</span>
+                                    Consommés :
+                                    
+                                    <span class="badge badge-light">{{ soldes.consomme }}</span>
+                                    
                                 </button>
                                 <button type="button" class="btn btn-danger btn-lg btn-block">
-                                    Conges restant <span class="badge badge-light">4</span>
+                                    Restants :
+                                    
+                                    <span class="badge badge-light">{{ soldes.restant }}</span>
+                                    
                                 </button>
                                 <span class=""></span>
+                                {% endfor %}
                             </div>
                         </div>
                     </div>

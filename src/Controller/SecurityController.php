@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use App\Entity\Soldes;
 use App\Entity\User;
 use App\Form\RegistrationType;
 
@@ -21,18 +21,38 @@ class SecurityController extends AbstractController
     public function registration(Request $request, ManagerRegistry $manager, UserPasswordEncoderInterface $encoder)
     {
        $user = new User();
+       $soldes = new Soldes();
 
        $form = $this->createForm(RegistrationType::class, $user);
 
        $form->handleRequest($request);
 
        if($form->isSubmitted() && $form->isValid()) {
+            //Hashage du mot de passe
        		$hash = $encoder->encodePassword($user, $user->getPassword());
-
        		$user->setPassword($hash);
-
-       		$manager = $this->getDoctrine()->getManager();
+            $manager = $this->getDoctrine()->getManager();
        		$manager->persist($user);
+            $manager->flush();
+
+
+
+
+            //Initialisation des soldes
+            $userRegistrated = $this->getDoctrine()->getRepository(User::class)->findBy(array('username' => $user->getUsername() , 'password' => $hash));
+            $user_id = $userRegistrated->getId();
+            dd($user_id);;
+
+
+
+            $soldes->setUser($user_id);
+            $soldes->setInitial(0);
+            $soldes->setConsomme(0);
+            $soldes->setRestant(0);
+
+
+       		
+            $manager->persist($soldes);
        		$manager->flush();
 
        		return $this->redirectToRoute('security_login');

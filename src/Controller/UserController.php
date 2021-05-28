@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Employe;
 use App\Entity\Conges;
 use App\Entity\Permission;
+use App\Entity\Soldes;
 use App\Repository\EmployeRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
@@ -37,11 +38,13 @@ class UserController extends AbstractController
         $user = $this->getUser(); //Prend l'id de chaque utilisateur connecté
         $permission = $this->getDoctrine()->getRepository(Permission::class)->findByUsers($user);
         $conges = $this->getDoctrine()->getRepository(Conges::class)->findByUsers($user);
+        $soldes = $this->getDoctrine()->getRepository(Soldes::class)->findByUser($user);
 
         return $this->render('user/dash_user.html.twig', [
             'controller_name' => 'UserController',
             'permission' => $permission,
             'conges' => $conges,
+            'solde' => $soldes
         ]);
     }
 
